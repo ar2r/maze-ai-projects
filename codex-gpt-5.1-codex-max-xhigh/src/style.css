@@ -1,0 +1,198 @@
+:root {
+  --bg: #0c1724;
+  --panel: rgba(16, 27, 43, 0.82);
+  --accent: #ffb703;
+  --accent-2: #4ade80;
+  --text: #e6edf7;
+  --muted: #9fb0c9;
+  --danger: #ef4444;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  --radius: 14px;
+  --blur: 18px;
+  font-family: "SF Pro Display", "Fira Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body, #app { height: 100%; margin: 0; }
+body {
+  background: radial-gradient(circle at 20% 20%, #12304f, #0c1724 48%), radial-gradient(circle at 80% 0%, #0b263b, transparent 45%);
+  color: var(--text);
+  overscroll-behavior: none;
+}
+
+#game-shell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: none;
+}
+
+#game-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+#ui-layer, #overlay-root {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.panel {
+  background: var(--panel);
+  backdrop-filter: blur(var(--blur));
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+
+.menu {
+  pointer-events: auto;
+  max-width: 420px;
+  margin: 24px auto;
+}
+
+.menu h1 {
+  margin: 0 0 8px;
+  letter-spacing: 0.5px;
+}
+
+.menu p {
+  margin: 6px 0 12px;
+  color: var(--muted);
+}
+
+.menu .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.button {
+  background: linear-gradient(135deg, var(--accent), #ff8f0f);
+  border: none;
+  color: #0c1724;
+  font-weight: 700;
+  padding: 12px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+  pointer-events: auto;
+}
+
+.button.secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+
+.button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.button:active { transform: translateY(1px) scale(0.99); box-shadow: none; }
+
+.settings-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.settings-row label { color: var(--muted); font-size: 14px; }
+
+.switch {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  pointer-events: auto;
+}
+
+select, input[type="checkbox"] {
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+#hud {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  gap: 10px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.hud-chip {
+  background: rgba(0, 0, 0, 0.35);
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+}
+
+#result-modal {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+#result-modal .panel { pointer-events: auto; width: min(480px, 92vw); }
+
+.small-text { color: var(--muted); font-size: 13px; }
+
+#joystick {
+  position: absolute;
+  bottom: 22px;
+  left: 22px;
+  width: 130px;
+  height: 130px;
+  pointer-events: none;
+}
+
+.joystick-base, .joystick-stick {
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.joystick-base {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.joystick-stick {
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  top: 35px;
+  left: 35px;
+  transition: transform 60ms linear;
+}
+
+#debug-overlay {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-family: "JetBrains Mono", "SFMono-Regular", monospace;
+  background: rgba(0, 0, 0, 0.55);
+  color: #c9e0ff;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  .menu { margin: 12px; }
+  .button { width: 100%; text-align: center; }
+  #hud { flex-direction: column; align-items: flex-start; }
+  #joystick { width: 120px; height: 120px; bottom: 16px; left: 16px; }
+}
