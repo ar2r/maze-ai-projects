@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500">
+  <rect width="400" height="500" fill="#1a1a2e"/>
+  <text x="200" y="100" fill="#16c79a" font-size="28" text-anchor="middle" font-family="sans-serif" font-weight="bold">🎉 Level Complete!</text>
+  <text x="200" y="175" fill="#e0e0e0" font-size="16" text-anchor="middle" font-family="sans-serif">⏱ Time: 12.3s</text>
+  <text x="200" y="203" fill="#e0e0e0" font-size="16" text-anchor="middle" font-family="sans-serif">🏆 Best: 12.3s</text>
+  <text x="200" y="231" fill="#e0e0e0" font-size="16" text-anchor="middle" font-family="sans-serif">💥 Wall hits: 7</text>
+  <text x="200" y="259" fill="#e0e0e0" font-size="16" text-anchor="middle" font-family="sans-serif">📊 Level: 1</text>
+  <rect x="90" y="310" width="220" height="44" rx="12" fill="#16c79a"/>
+  <text x="200" y="337" fill="#1a1a2e" font-size="15" text-anchor="middle" font-family="sans-serif" font-weight="600">Next Level →</text>
+  <rect x="90" y="366" width="220" height="44" rx="12" fill="#2a2a4a" stroke="#444"/>
+  <text x="200" y="393" fill="#e0e0e0" font-size="15" text-anchor="middle" font-family="sans-serif" font-weight="600">↻ Retry</text>
+  <rect x="90" y="422" width="220" height="44" rx="12" fill="#2a2a4a" stroke="#444"/>
+  <text x="200" y="449" fill="#e0e0e0" font-size="15" text-anchor="middle" font-family="sans-serif" font-weight="600">☰ Menu</text>
+</svg>

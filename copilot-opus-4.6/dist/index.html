@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Maze Runner</title>
+  <script type="module" crossorigin src="./assets/index-CCBF4A1N.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-whEYMTcd.css">
+</head>
+<body>
+  <!-- UI screens (DOM-based) -->
+  <div id="ui-root">
+    <!-- Main menu -->
+    <div id="screen-menu" class="screen active">
+      <h1>🏃 Maze Runner</h1>
+      <p class="subtitle">Navigate through ever-harder mazes!</p>
+      <div class="menu-buttons">
+        <button id="btn-start" class="btn btn-primary">▶ Start Game</button>
+        <button id="btn-continue" class="btn btn-secondary" style="display:none">▶ Continue</button>
+        <button id="btn-settings" class="btn btn-secondary">⚙ Settings</button>
+      </div>
+      <div class="controls-hint">
+        <p>🖱 Mouse / WASD / Arrows</p>
+        <p>📱 Touch joystick on mobile</p>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div id="screen-settings" class="screen">
+      <h2>⚙ Settings</h2>
+      <div class="settings-list">
+        <label><input type="checkbox" id="setting-sound" checked /> Sound effects</label>
+        <label><input type="checkbox" id="setting-vibration" checked /> Vibration (mobile)</label>
+        <label>
+          Control mode:
+          <select id="setting-control">
+            <option value="auto">Auto-detect</option>
+            <option value="mouse">Mouse follow</option>
+            <option value="keyboard">Keyboard only</option>
+            <option value="joystick">Touch joystick</option>
+          </select>
+        </label>
+        <label><input type="checkbox" id="setting-debug" /> Debug overlay</label>
+      </div>
+      <button id="btn-settings-back" class="btn btn-secondary">← Back</button>
+    </div>
+
+    <!-- Results -->
+    <div id="screen-results" class="screen">
+      <h2>🎉 Level Complete!</h2>
+      <div id="results-content"></div>
+      <div class="menu-buttons">
+        <button id="btn-next" class="btn btn-primary">Next Level →</button>
+        <button id="btn-retry" class="btn btn-secondary">↻ Retry</button>
+        <button id="btn-results-menu" class="btn btn-secondary">☰ Menu</button>
+      </div>
+    </div>
+
+    <!-- Pause -->
+    <div id="screen-pause" class="screen">
+      <h2>⏸ Paused</h2>
+      <div class="menu-buttons">
+        <button id="btn-resume" class="btn btn-primary">▶ Resume</button>
+        <button id="btn-restart" class="btn btn-secondary">↻ Restart</button>
+        <button id="btn-pause-menu" class="btn btn-secondary">☰ Menu</button>
+      </div>
+    </div>
+
+    <!-- In-game HUD -->
+    <div id="hud" style="display:none">
+      <div id="hud-level">Level 1</div>
+      <div id="hud-timer">0:00</div>
+      <button id="btn-pause" class="btn-icon">⏸</button>
+    </div>
+  </div>
+
+  <!-- Game canvas layers -->
+  <canvas id="canvas-maze"></canvas>
+  <canvas id="canvas-player"></canvas>
+
+  <!-- Virtual joystick (mobile) -->
+  <div id="joystick-zone" style="display:none">
+    <div id="joystick-base">
+      <div id="joystick-thumb"></div>
+    </div>
+  </div>
+
+</body>
+</html>

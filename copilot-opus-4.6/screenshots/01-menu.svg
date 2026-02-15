@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500">
+  <rect width="400" height="500" fill="#1a1a2e"/>
+  <text x="200" y="125" fill="#16c79a" font-size="36" text-anchor="middle" font-family="sans-serif" font-weight="bold">🏃 Maze Runner</text>
+  <text x="200" y="155" fill="#888" font-size="14" text-anchor="middle" font-family="sans-serif">Navigate through ever-harder mazes!</text>
+  <rect x="90" y="210" width="220" height="44" rx="12" fill="#16c79a"/>
+  <text x="200" y="237" fill="#1a1a2e" font-size="15" text-anchor="middle" font-family="sans-serif" font-weight="600">▶ Start Game</text>
+  <rect x="90" y="266" width="220" height="44" rx="12" fill="#2a2a4a" stroke="#444"/>
+  <text x="200" y="293" fill="#e0e0e0" font-size="15" text-anchor="middle" font-family="sans-serif" font-weight="600">⚙ Settings</text>
+  <text x="200" y="390" fill="#666" font-size="12" text-anchor="middle" font-family="sans-serif">🖱 Mouse / WASD / Arrows</text>
+  <text x="200" y="410" fill="#666" font-size="12" text-anchor="middle" font-family="sans-serif">📱 Touch joystick on mobile</text>
+</svg>
