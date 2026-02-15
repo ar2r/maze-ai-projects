@@ -1,0 +1,324 @@
+:root {
+  color-scheme: light;
+  --bg-1: #0c1f2a;
+  --bg-2: #12354b;
+  --bg-3: #1b4f6e;
+  --panel: rgba(9, 17, 24, 0.78);
+  --panel-strong: rgba(9, 17, 24, 0.92);
+  --accent: #f7c660;
+  --accent-2: #8be8ff;
+  --text: #e9f2f6;
+  --muted: #b6c6cf;
+  --danger: #ff6b6b;
+  --shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  --radius: 18px;
+  --radius-small: 12px;
+  font-family: "Trebuchet MS", "Lucida Grande", "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(1200px 800px at 20% 10%, #234e64, transparent 60%),
+    radial-gradient(900px 700px at 80% 20%, #1a3c5a, transparent 55%),
+    linear-gradient(160deg, var(--bg-1), var(--bg-2) 55%, var(--bg-3));
+  color: var(--text);
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+body.playing {
+  overscroll-behavior: none;
+}
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+#game-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+#maze-canvas,
+#play-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#play-canvas {
+  touch-action: none;
+}
+
+#hud {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  pointer-events: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 12px;
+}
+
+#hud > * {
+  pointer-events: auto;
+}
+
+#level-info,
+#timer {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(9, 17, 24, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: var(--shadow);
+}
+
+#pause-btn {
+  padding: 8px 14px;
+}
+
+#hint {
+  position: absolute;
+  bottom: 18px;
+  right: 18px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(9, 17, 24, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  backdrop-filter: blur(10px);
+  background: rgba(4, 10, 14, 0.35);
+  animation: fadeIn 0.25s ease-out;
+}
+
+.screen[hidden] {
+  display: none;
+}
+
+.panel {
+  width: min(520px, 90vw);
+  padding: 28px;
+  border-radius: var(--radius);
+  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+h1,
+h2 {
+  margin: 0 0 14px;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: clamp(28px, 4vw, 40px);
+  letter-spacing: 0.04em;
+}
+
+h2 {
+  font-size: clamp(22px, 3vw, 30px);
+}
+
+.tagline {
+  color: var(--muted);
+  margin-bottom: 22px;
+}
+
+.menu-buttons {
+  display: grid;
+  gap: 12px;
+}
+
+button {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-small);
+  padding: 12px 16px;
+  font-weight: 700;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: linear-gradient(140deg, #f7c660, #f09819);
+  color: #1b1b1b;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.3);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+.settings-group {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.toggle,
+.select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-small);
+  background: var(--panel-strong);
+}
+
+select,
+input[type="checkbox"] {
+  accent-color: var(--accent);
+}
+
+.results {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0 22px;
+  font-size: 16px;
+}
+
+.mini-help {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.joystick {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  width: 140px;
+  height: 140px;
+  display: grid;
+  place-items: center;
+  touch-action: none;
+  user-select: none;
+  pointer-events: auto;
+}
+
+.joystick.hidden {
+  display: none;
+}
+
+.joystick-base {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.4);
+}
+
+.joystick-stick {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(160deg, #8be8ff, #5aa6ff);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  transform: translate(0, 0);
+  transition: transform 0.08s ease-out;
+}
+
+.debug-overlay {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  padding: 10px 12px;
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 10px;
+  white-space: pre;
+  pointer-events: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  #hud {
+    top: 12px;
+    left: 12px;
+    right: 12px;
+  }
+
+  .panel {
+    padding: 22px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 14px 16px;
+  }
+
+  #hint {
+    right: 12px;
+    bottom: 12px;
+    font-size: 11px;
+  }
+
+  .joystick {
+    width: 120px;
+    height: 120px;
+  }
+
+  .joystick-base {
+    width: 100px;
+    height: 100px;
+  }
+
+  .joystick-stick {
+    width: 48px;
+    height: 48px;
+  }
+}

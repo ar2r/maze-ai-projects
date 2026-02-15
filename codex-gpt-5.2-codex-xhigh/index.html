@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Maze Drift</title>
+  </head>
+  <body>
+    <div id="app">
+      <div id="game-root">
+        <canvas id="maze-canvas" aria-hidden="true"></canvas>
+        <canvas id="play-canvas" aria-hidden="true"></canvas>
+        <div id="hud">
+          <div id="level-info">Level 1</div>
+          <div id="timer">00:00</div>
+          <button id="pause-btn" type="button">Pause</button>
+        </div>
+        <div id="hint"></div>
+        <div id="joystick" class="joystick" aria-hidden="true">
+          <div class="joystick-base"></div>
+          <div class="joystick-stick"></div>
+        </div>
+        <div id="debug-overlay" class="debug-overlay" hidden></div>
+      </div>
+
+      <section id="screen-menu" class="screen">
+        <div class="panel">
+          <h1>Maze Drift</h1>
+          <p class="tagline">Лабиринт растет, коридоры сужаются — найди выход.</p>
+          <div class="menu-buttons">
+            <button id="btn-start" type="button">Start</button>
+            <button id="btn-continue" type="button">Continue</button>
+            <button id="btn-settings" type="button">Settings</button>
+          </div>
+          <div class="mini-help">Управление: Drag / WASD • Мобайл: джойстик</div>
+        </div>
+      </section>
+
+      <section id="screen-settings" class="screen" hidden>
+        <div class="panel">
+          <h2>Settings</h2>
+          <div class="settings-group">
+            <label class="toggle">
+              <input id="toggle-sound" type="checkbox" />
+              <span>Sound</span>
+            </label>
+            <label class="toggle">
+              <input id="toggle-vibration" type="checkbox" />
+              <span>Vibration</span>
+            </label>
+            <label class="select">
+              <span>Control Mode</span>
+              <select id="select-control">
+                <option value="joystick">Joystick (Mobile)</option>
+                <option value="drag">Drag / Pointer</option>
+              </select>
+            </label>
+          </div>
+          <div class="menu-buttons">
+            <button id="btn-settings-back" type="button">Back</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-pause" class="screen" hidden>
+        <div class="panel">
+          <h2>Paused</h2>
+          <div class="menu-buttons">
+            <button id="btn-resume" type="button">Resume</button>
+            <button id="btn-retry" type="button">Retry</button>
+            <button id="btn-exit" type="button">Exit</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-results" class="screen" hidden>
+        <div class="panel">
+          <h2>Level Complete</h2>
+          <div class="results">
+            <div>Time: <span id="result-time">0.0s</span></div>
+            <div>Wall touches: <span id="result-collisions">0</span></div>
+            <div>Best: <span id="result-best">—</span></div>
+          </div>
+          <div class="menu-buttons">
+            <button id="btn-next" type="button">Next</button>
+            <button id="btn-retry-results" type="button">Retry</button>
+            <button id="btn-exit-results" type="button">Menu</button>
+          </div>
+        </div>
+      </section>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
