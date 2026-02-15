@@ -13,7 +13,9 @@ A root launcher is available to run any game from this repository without typing
 
 - `make games` - show the numbered list of available games.
 - `make game` - open interactive selection, choose a game by number, then start it.
-- `make game GAME_ARGS="--open=false"` - pass extra Vite dev args.
+- `make game GAME=1` - skip selection and run game #1.
+- `make game GAME=gemini-3` - skip selection and run game by folder name.
+- `make game GAME_ARGS="--open=false"` - pass extra Vite dev args (e.g., disable auto-opening browser).
 
 ### Runtime behavior
 
@@ -38,3 +40,4 @@ A root launcher is available to run any game from this repository without typing
 | `copilot-opus-4.5` | Maze Game | DFS-генерация, рост сложности, keyboard/mouse/touch управление, сохранение | Подчёркнуто отсутствие runtime-зависимостей; debug overlay по `F3` |
 | `copilot-opus-4.6` | Maze Runner | Полноценная игра с настройками, аудио, вибрацией, сохранением, debug overlay | Наиболее явно описана система настроек (Auto/Mouse/Keyboard/Joystick) и QA-чеклист |
 | `copilot-sonnet-4.5` | Maze Game | Прогрессивная сложность, кроссплатформенное управление, `localStorage`, unit-тесты | По умолчанию dev-сервер на `http://localhost:3000`; акцент на dark theme и дополнительные петли с 12+ уровня |
+| `gemini-3` | Neon Maze Escape | Кроссовер-стилистика (Heroes of Might and Magic + Pacman), процедурная генерация, анимированный персонаж | Уникальный визуальный стиль: каменные стены, пергаментный интерфейс; анимированный Pacman; высокая производительность через Offscreen Canvas |

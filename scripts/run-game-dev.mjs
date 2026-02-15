@@ -22,9 +22,9 @@ function npmCommand() {
 
 function printUsage() {
   console.log('Usage:');
-  console.log('  npm run game');
+  console.log('  npm run game [name|index]');
   console.log('  npm run games');
-  console.log('  npm run game -- -- --open=false');
+  console.log('  npm run game -- [name|index] -- --open=false');
 }
 
 function splitCliArgs(argv) {
@@ -243,12 +243,6 @@ async function main() {
     return;
   }
 
-  if (options.length > 0 && !(options.length === 1 && options[0] === '--list')) {
-    console.error(`[error] Unknown option(s): ${options.join(' ')}`);
-    printUsage();
-    process.exit(1);
-  }
-
   validatePassthroughArgs(passthrough);
 
   const rootDir = process.cwd();
@@ -259,12 +253,31 @@ async function main() {
     process.exit(1);
   }
 
-  if (options.length === 1 && options[0] === '--list') {
+  if (options.includes('--list')) {
     printGameList(games);
     return;
   }
 
-  const selectedGame = await promptForGame(games);
+  let selectedGame;
+  const firstArg = options.find(opt => !opt.startsWith('-'));
+
+  if (firstArg) {
+    // Try as index
+    const index = Number.parseInt(firstArg, 10);
+    if (Number.isInteger(index) && index >= 1 && index <= games.length) {
+      selectedGame = games[index - 1];
+    } else if (games.includes(firstArg)) {
+      // Try as name
+      selectedGame = firstArg;
+    } else {
+      console.error(`[error] Invalid game selection: "${firstArg}"`);
+      printGameList(games);
+      process.exit(1);
+    }
+  } else {
+    selectedGame = await promptForGame(games);
+  }
+
   const selectedGameDir = path.join(rootDir, selectedGame);
 
   console.log(`[select] Selected: ${selectedGame}`);
