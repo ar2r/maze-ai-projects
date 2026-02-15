@@ -1,0 +1,9 @@
+{
+  "name": "maze-ai-projects-tools",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "game": "node ./scripts/run-game-dev.mjs",
+    "games": "node ./scripts/run-game-dev.mjs --list"
+  }
+}
