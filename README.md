@@ -14,7 +14,7 @@ A root launcher is available to run any game from this repository without typing
 - `make games` - show the numbered list of available games.
 - `make game` - open interactive selection, choose a game by number, then start it.
 - `make game GAME=1` - skip selection and run game #1.
-- `make game GAME=gemini-3` - skip selection and run game by folder name.
+- `make game GAME=copilot-gemini-3` - skip selection and run game by folder name.
 - `make game GAME_ARGS="--open=false"` - pass extra Vite dev args (e.g., disable auto-opening browser).
 
 ### Runtime behavior
@@ -35,6 +35,7 @@ A root launcher is available to run any game from this repository without typing
 | `codex-gpt-5.1-codex-max-xhigh` | Maze Sprint | Генерация лабиринтов по seed, рост сложности, управление на ПК/мобайле, пауза/результаты/прогресс | Явная воспроизводимость через `?seed=...`, подробный QA-чеклист в README |
 | `codex-gpt-5.2-codex-xhigh` | Maze Drift | Классический прогрессивный лабиринт с desktop/mobile управлением и debug-режимом | Более компактная реализация и документация; debug включается через URL или `localStorage['maze-debug']=1` |
 | `codex-gpt-5.3-codex-xhigh` | Maze Runner | Случайные лабиринты, рост сложности, настройки/debug overlay, `localStorage` | Более структурированный движок + отдельный `test:run` и QA test plan |
+| `copilot-gemini-3` | Maze Runner | Процедурная генерация, бесконечные уровни, адаптивное управление, оффлайн-режим | Реализация на чистом Canvas API без лишних зависимостей, фокус на производительности и простоте |
 | `copilot-gpt-5.3-codex` | Maze Runner | Генерация по seed, несколько режимов ввода, пауза/рестарт, сохранение прогресса | Отмечены петли/комнаты на высоких уровнях и anti-tunneling коллизии |
 | `copilot-haiku-4.5` | Maze Runner - HTML5 Game | Полный цикл игры, адаптивное управление, счёт/результаты, сохранение, debug overlay | Для тестов используется `node tests/simple-test.js` (без Vitest), есть `VERIFICATION.md` |
 | `copilot-opus-4.5` | Maze Game | DFS-генерация, рост сложности, keyboard/mouse/touch управление, сохранение | Подчёркнуто отсутствие runtime-зависимостей; debug overlay по `F3` |
