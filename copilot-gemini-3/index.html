@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Maze Runner</title>
+  </head>
+  <body>
+    <div id="game-container">
+      <canvas id="world-canvas"></canvas>
+      <canvas id="entity-canvas"></canvas>
+      
+      <div id="hud">
+        Level: <span id="level-display">1</span> | Time: <span id="time-display">0.0</span>s
+      </div>
+
+      <div id="debug-overlay"></div>
+
+      <div id="ui-layer">
+        <!-- Main Menu -->
+        <div id="menu-screen" class="screen active">
+          <h1>MAZE RUNNER</h1>
+          <p>Navigate the maze to the exit.</p>
+          <button id="btn-start">Start Game</button>
+          <div style="margin-top: 10px; font-size: 0.8em; color: #aaa;">
+            <p>Desktop: Mouse / Arrow Keys</p>
+            <p>Mobile: Drag / Virtual Joystick</p>
+          </div>
+          <button id="btn-settings" class="secondary" style="margin-top: 10px; font-size: 0.9em;">Settings</button>
+        </div>
+
+        <!-- Level Complete -->
+        <div id="results-screen" class="screen">
+          <h2>Level Complete!</h2>
+          <p>Time: <span id="result-time">0.0</span>s</p>
+          <p>Collisions: <span id="result-collisions">0</span></p>
+          <button id="btn-next">Next Level</button>
+        </div>
+
+        <!-- Settings -->
+         <div id="settings-screen" class="screen">
+          <h2>Settings</h2>
+          <label><input type="checkbox" id="chk-sound" checked> Sound Effects</label>
+          <label><input type="checkbox" id="chk-vibration" checked> Haptic Feedback</label>
+          <label><input type="checkbox" id="chk-debug"> Debug Info</label>
+          <button id="btn-back" class="secondary">Back</button>
+        </div>
+      </div>
+      
+      <div id="controls-hint">Drag to move</div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
