@@ -1,0 +1,17 @@
+{
+  "name": "maze-runner",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A fully client-side procedurally generated maze game",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "node tests/simple-test.js"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3",
+    "vite": "^7.3.1"
+  }
+}
