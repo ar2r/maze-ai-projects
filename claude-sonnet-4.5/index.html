@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Maze Runner - Escape the Labyrinth</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Main Menu -->
+    <div id="menu" class="screen">
+      <div class="menu-content">
+        <h1 class="game-title">🎯 MAZE RUNNER</h1>
+        <p class="game-subtitle">Escape the ever-growing labyrinth</p>
+        <div class="menu-buttons">
+          <button id="btn-start" class="btn btn-primary">New Game</button>
+          <button id="btn-continue" class="btn btn-secondary">Continue</button>
+          <button id="btn-settings" class="btn btn-secondary">Settings</button>
+        </div>
+        <div class="stats-preview">
+          <div class="stat-item">
+            <span class="stat-label">Best Level:</span>
+            <span id="best-level">1</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Total Time:</span>
+            <span id="total-time">0:00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Screen -->
+    <div id="settings" class="screen hidden">
+      <div class="settings-content">
+        <h2>⚙️ Settings</h2>
+        <div class="settings-options">
+          <div class="setting-row">
+            <label for="sound-toggle">Sound Effects</label>
+            <input type="checkbox" id="sound-toggle" class="toggle" checked>
+          </div>
+          <div class="setting-row">
+            <label for="vibration-toggle">Vibration</label>
+            <input type="checkbox" id="vibration-toggle" class="toggle" checked>
+          </div>
+          <div class="setting-row">
+            <label for="control-mode">Control Mode</label>
+            <select id="control-mode" class="select">
+              <option value="auto">Auto (Desktop/Mobile)</option>
+              <option value="mouse">Mouse Follow</option>
+              <option value="keyboard">Keyboard (WASD)</option>
+              <option value="joystick">Virtual Joystick</option>
+            </select>
+          </div>
+          <div class="setting-row">
+            <label for="debug-toggle">Debug Mode</label>
+            <input type="checkbox" id="debug-toggle" class="toggle">
+          </div>
+        </div>
+        <button id="btn-settings-back" class="btn btn-primary">Back to Menu</button>
+      </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen hidden">
+      <!-- HUD -->
+      <div id="hud" class="hud">
+        <div class="hud-top">
+          <div class="hud-item">
+            <span class="hud-label">Level</span>
+            <span id="hud-level" class="hud-value">1</span>
+          </div>
+          <div class="hud-item">
+            <span class="hud-label">Time</span>
+            <span id="hud-time" class="hud-value">0:00</span>
+          </div>
+          <div class="hud-item">
+            <span class="hud-label">Hits</span>
+            <span id="hud-hits" class="hud-value">0</span>
+          </div>
+        </div>
+        <button id="btn-pause" class="btn-icon">⏸️</button>
+      </div>
+
+      <!-- Canvas -->
+      <canvas id="game-canvas"></canvas>
+
+      <!-- Virtual Joystick (mobile) -->
+      <div id="joystick-container" class="joystick-container hidden">
+        <div id="joystick-base" class="joystick-base">
+          <div id="joystick-stick" class="joystick-stick"></div>
+        </div>
+      </div>
+
+      <!-- Debug Overlay -->
+      <div id="debug-overlay" class="debug-overlay hidden">
+        <div class="debug-line">FPS: <span id="debug-fps">60</span></div>
+        <div class="debug-line">Level: <span id="debug-level">1</span></div>
+        <div class="debug-line">Size: <span id="debug-size">10x10</span></div>
+        <div class="debug-line">Seed: <span id="debug-seed">0</span></div>
+        <div class="debug-line">Pos: <span id="debug-pos">0, 0</span></div>
+        <div class="debug-line">Collisions: <span id="debug-collisions">0</span></div>
+      </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pause-menu" class="overlay hidden">
+      <div class="overlay-content">
+        <h2>⏸️ Paused</h2>
+        <div class="menu-buttons">
+          <button id="btn-resume" class="btn btn-primary">Resume</button>
+          <button id="btn-restart" class="btn btn-secondary">Restart Level</button>
+          <button id="btn-quit" class="btn btn-secondary">Quit to Menu</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="results" class="overlay hidden">
+      <div class="overlay-content">
+        <h2 id="results-title">🎉 Level Complete!</h2>
+        <div class="results-stats">
+          <div class="result-stat">
+            <span class="result-label">Time</span>
+            <span id="result-time" class="result-value">0:00</span>
+          </div>
+          <div class="result-stat">
+            <span class="result-label">Wall Hits</span>
+            <span id="result-hits" class="result-value">0</span>
+          </div>
+          <div class="result-stat">
+            <span class="result-label">Best Time</span>
+            <span id="result-best-time" class="result-value">-</span>
+          </div>
+        </div>
+        <div class="menu-buttons">
+          <button id="btn-next-level" class="btn btn-primary">Next Level ➡️</button>
+          <button id="btn-retry" class="btn btn-secondary">Retry</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
