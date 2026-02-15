@@ -1,0 +1,30 @@
+<svg viewBox="0 0 400 450" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="450" fill="#1a1a2e"/>
+  
+  <!-- Title -->
+  <text x="200" y="80" text-anchor="middle" fill="#e94560" font-family="sans-serif" font-size="48" font-weight="bold">🌀 MAZE</text>
+  
+  <!-- Subtitle -->
+  <text x="200" y="120" text-anchor="middle" fill="#888" font-family="sans-serif" font-size="14">Navigate through procedural labyrinths</text>
+  
+  <!-- New Game Button -->
+  <rect x="60" y="160" width="280" height="50" rx="8" fill="url(#btnGradient)"/>
+  <text x="200" y="192" text-anchor="middle" fill="white" font-family="sans-serif" font-size="18">New Game</text>
+  
+  <!-- Continue Button -->
+  <rect x="60" y="225" width="280" height="50" rx="8" fill="#0f3460" opacity="0.5"/>
+  <text x="200" y="257" text-anchor="middle" fill="white" font-family="sans-serif" font-size="18" opacity="0.5">Continue</text>
+  
+  <!-- Settings Button -->
+  <rect x="60" y="290" width="280" height="50" rx="8" fill="#0f3460"/>
+  <text x="200" y="322" text-anchor="middle" fill="white" font-family="sans-serif" font-size="18">Settings</text>
+  
+  <!-- Gradient definitions -->
+  <defs>
+    <linearGradient id="btnGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e94560"/>
+      <stop offset="100%" style="stop-color:#c23b50"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -1,0 +1,87 @@
+<svg viewBox="0 0 400 700" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="700" fill="#1a1a2e"/>
+  
+  <!-- HUD -->
+  <rect x="10" y="10" width="70" height="30" rx="4" fill="rgba(22,33,62,0.8)"/>
+  <text x="45" y="30" text-anchor="middle" fill="white" font-family="sans-serif" font-size="12">Level 2</text>
+  
+  <rect x="320" y="10" width="70" height="30" rx="4" fill="rgba(22,33,62,0.8)"/>
+  <text x="355" y="30" text-anchor="middle" fill="white" font-family="sans-serif" font-size="12">0:45.12</text>
+  
+  <!-- Pause button -->
+  <rect x="280" y="10" width="30" height="30" rx="6" fill="rgba(22,33,62,0.8)"/>
+  <rect x="288" y="16" width="4" height="18" fill="white"/>
+  <rect x="298" y="16" width="4" height="18" fill="white"/>
+  
+  <!-- Maze container -->
+  <rect x="20" y="55" width="360" height="360" fill="#16213e" rx="4"/>
+  
+  <!-- Start zone -->
+  <rect x="20" y="55" width="40" height="40" fill="rgba(66,135,245,0.5)"/>
+  
+  <!-- End zone -->
+  <rect x="340" y="375" width="40" height="40" fill="rgba(74,222,128,0.6)"/>
+  
+  <!-- Simplified 9x9 maze walls -->
+  <g stroke="#0f3460" stroke-width="3" fill="none">
+    <rect x="20" y="55" width="360" height="360"/>
+    
+    <line x1="60" y1="55" x2="60" y2="95"/>
+    <line x1="100" y1="55" x2="100" y2="135"/>
+    <line x1="140" y1="95" x2="220" y2="95"/>
+    <line x1="260" y1="55" x2="260" y2="95"/>
+    <line x1="300" y1="95" x2="380" y2="95"/>
+    
+    <line x1="20" y1="135" x2="60" y2="135"/>
+    <line x1="60" y1="135" x2="60" y2="175"/>
+    <line x1="140" y1="135" x2="180" y2="135"/>
+    <line x1="220" y1="135" x2="260" y2="135"/>
+    <line x1="300" y1="135" x2="300" y2="215"/>
+    <line x1="340" y1="135" x2="380" y2="135"/>
+    
+    <line x1="100" y1="175" x2="140" y2="175"/>
+    <line x1="180" y1="175" x2="220" y2="175"/>
+    <line x1="260" y1="175" x2="300" y2="175"/>
+    
+    <line x1="20" y1="215" x2="60" y2="215"/>
+    <line x1="100" y1="215" x2="180" y2="215"/>
+    <line x1="220" y1="215" x2="260" y2="215"/>
+    <line x1="340" y1="215" x2="380" y2="215"/>
+    
+    <line x1="60" y1="255" x2="100" y2="255"/>
+    <line x1="140" y1="255" x2="180" y2="255"/>
+    <line x1="180" y1="255" x2="180" y2="335"/>
+    <line x1="260" y1="255" x2="300" y2="255"/>
+    <line x1="340" y1="255" x2="340" y2="295"/>
+    
+    <line x1="20" y1="295" x2="60" y2="295"/>
+    <line x1="100" y1="295" x2="140" y2="295"/>
+    <line x1="220" y1="295" x2="260" y2="295"/>
+    <line x1="300" y1="295" x2="340" y2="295"/>
+    
+    <line x1="60" y1="335" x2="100" y2="335"/>
+    <line x1="140" y1="335" x2="180" y2="335"/>
+    <line x1="220" y1="335" x2="300" y2="335"/>
+    <line x1="340" y1="335" x2="380" y2="335"/>
+    
+    <line x1="20" y1="375" x2="60" y2="375"/>
+    <line x1="100" y1="375" x2="140" y2="375"/>
+    <line x1="260" y1="375" x2="340" y2="375"/>
+  </g>
+  
+  <!-- Player -->
+  <circle cx="200" cy="260" r="14" fill="rgba(233,69,96,0.4)"/>
+  <circle cx="200" cy="260" r="8" fill="#e94560"/>
+  <circle cx="197" cy="257" r="2.5" fill="rgba(255,255,255,0.4)"/>
+  
+  <!-- Virtual Joystick -->
+  <circle cx="90" cy="600" r="60" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+  <circle cx="105" cy="585" r="25" fill="rgba(233,69,96,0.8)" stroke="white" stroke-width="2"/>
+  
+  <!-- Instructions -->
+  <text x="200" y="680" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-family="sans-serif" font-size="11">Use joystick to move • Reach the green exit</text>
+  
+  <!-- Mobile label -->
+  <text x="200" y="470" text-anchor="middle" fill="#e94560" font-family="sans-serif" font-size="14" font-weight="bold">Mobile View</text>
+</svg>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Maze Game</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      touch-action: none;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+      background: #1a1a2e;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    #app {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #game-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #game-canvas {
+      display: block;
+      background: #16213e;
+      border-radius: 4px;
+    }
+
+    /* Menu styles */
+    .menu-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(26, 26, 46, 0.95);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .menu-overlay.hidden {
+      display: none;
+    }
+
+    .menu-title {
+      font-size: clamp(2rem, 8vw, 4rem);
+      color: #e94560;
+      margin-bottom: 2rem;
+      text-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+    }
+
+    .menu-subtitle {
+      font-size: clamp(0.9rem, 3vw, 1.2rem);
+      color: #888;
+      margin-bottom: 2rem;
+    }
+
+    .menu-btn {
+      width: min(280px, 80vw);
+      padding: 1rem 2rem;
+      margin: 0.5rem;
+      font-size: clamp(1rem, 4vw, 1.2rem);
+      background: linear-gradient(135deg, #e94560 0%, #c23b50 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      touch-action: manipulation;
+    }
+
+    .menu-btn:hover, .menu-btn:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(233, 69, 96, 0.4);
+      outline: none;
+    }
+
+    .menu-btn:active {
+      transform: translateY(0);
+    }
+
+    .menu-btn:focus-visible {
+      outline: 3px solid #fff;
+      outline-offset: 2px;
+    }
+
+    .menu-btn.secondary {
+      background: linear-gradient(135deg, #0f3460 0%, #162447 100%);
+    }
+
+    .menu-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Settings modal */
+    .settings-panel {
+      background: #16213e;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: min(400px, 90vw);
+      width: 100%;
+    }
+
+    .settings-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #0f3460;
+      color: #fff;
+    }
+
+    .settings-row:last-child {
+      border-bottom: none;
+    }
+
+    .toggle {
+      width: 50px;
+      height: 28px;
+      background: #0f3460;
+      border-radius: 14px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .toggle.active {
+      background: #e94560;
+    }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background: white;
+      border-radius: 50%;
+      top: 3px;
+      left: 3px;
+      transition: left 0.2s;
+    }
+
+    .toggle.active::after {
+      left: 25px;
+    }
+
+    /* Results screen */
+    .results-content {
+      text-align: center;
+      color: #fff;
+    }
+
+    .results-level {
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
+      color: #e94560;
+      margin-bottom: 1rem;
+    }
+
+    .results-stat {
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      margin: 0.5rem 0;
+      color: #aaa;
+    }
+
+    .results-stat span {
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .results-best {
+      color: #4ade80 !important;
+    }
+
+    /* HUD */
+    .hud {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      justify-content: space-between;
+      color: #fff;
+      font-size: clamp(0.8rem, 2.5vw, 1rem);
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    .hud-item {
+      background: rgba(22, 33, 62, 0.8);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+    }
+
+    .pause-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 44px;
+      height: 44px;
+      background: rgba(22, 33, 62, 0.8);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+    }
+
+    .pause-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: #fff;
+    }
+
+    /* Debug overlay */
+    .debug-overlay {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #0f0;
+      font-family: monospace;
+      font-size: 12px;
+      padding: 8px;
+      border-radius: 4px;
+      z-index: 200;
+      pointer-events: none;
+    }
+
+    .debug-overlay.hidden {
+      display: none;
+    }
+
+    /* Instructions */
+    .instructions {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, 0.6);
+      font-size: clamp(0.7rem, 2vw, 0.9rem);
+      text-align: center;
+      pointer-events: none;
+      z-index: 40;
+    }
+
+    /* Joystick */
+    .joystick-container {
+      position: absolute;
+      bottom: 30px;
+      left: 30px;
+      width: 120px;
+      height: 120px;
+      z-index: 80;
+      pointer-events: auto;
+    }
+
+    .joystick-base {
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .joystick-knob {
+      width: 50px;
+      height: 50px;
+      background: rgba(233, 69, 96, 0.8);
+      border-radius: 50%;
+      border: 2px solid #fff;
+      transition: transform 0.05s;
+    }
+
+    @media (min-width: 768px) {
+      .joystick-container {
+        display: none;
+      }
+    }
+  </style>
+  <script type="module" crossorigin src="./assets/index-ni6zKemo.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div id="game-container">
+      <canvas id="game-canvas"></canvas>
+      
+      <!-- Main Menu -->
+      <div id="menu-main" class="menu-overlay">
+        <h1 class="menu-title">🌀 MAZE</h1>
+        <p class="menu-subtitle">Navigate through procedural labyrinths</p>
+        <button id="btn-start" class="menu-btn">New Game</button>
+        <button id="btn-continue" class="menu-btn" disabled>Continue</button>
+        <button id="btn-settings" class="menu-btn secondary">Settings</button>
+      </div>
+
+      <!-- Settings Menu -->
+      <div id="menu-settings" class="menu-overlay hidden">
+        <div class="settings-panel">
+          <h2 style="color: #e94560; margin-bottom: 1.5rem; text-align: center;">Settings</h2>
+          <div class="settings-row">
+            <span>Sound Effects</span>
+            <div id="toggle-sound" class="toggle active"></div>
+          </div>
+          <div class="settings-row">
+            <span>Vibration</span>
+            <div id="toggle-vibration" class="toggle active"></div>
+          </div>
+          <div class="settings-row">
+            <span>Show Timer</span>
+            <div id="toggle-timer" class="toggle active"></div>
+          </div>
+          <button id="btn-settings-back" class="menu-btn" style="margin-top: 1.5rem;">Back</button>
+        </div>
+      </div>
+
+      <!-- Pause Menu -->
+      <div id="menu-pause" class="menu-overlay hidden">
+        <h2 class="menu-title" style="font-size: clamp(1.5rem, 6vw, 2.5rem);">Paused</h2>
+        <button id="btn-resume" class="menu-btn">Resume</button>
+        <button id="btn-restart" class="menu-btn secondary">Restart Level</button>
+        <button id="btn-quit" class="menu-btn secondary">Quit to Menu</button>
+      </div>
+
+      <!-- Results Screen -->
+      <div id="menu-results" class="menu-overlay hidden">
+        <div class="results-content">
+          <h2 class="menu-title" style="font-size: clamp(1.5rem, 6vw, 2.5rem);">Level Complete!</h2>
+          <p id="results-level" class="results-level">Level 1</p>
+          <p class="results-stat">Time: <span id="results-time">0:00</span></p>
+          <p class="results-stat">Wall Hits: <span id="results-hits">0</span></p>
+          <p id="results-best" class="results-stat hidden">New Best Time!</p>
+        </div>
+        <button id="btn-next" class="menu-btn">Next Level</button>
+        <button id="btn-retry" class="menu-btn secondary">Retry</button>
+      </div>
+
+      <!-- HUD -->
+      <div id="hud" class="hud hidden">
+        <div class="hud-item">Level <span id="hud-level">1</span></div>
+        <div id="hud-time" class="hud-item">0:00</div>
+      </div>
+
+      <button id="pause-btn" class="pause-btn hidden">
+        <svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+      </button>
+
+      <!-- Joystick (mobile) -->
+      <div id="joystick" class="joystick-container hidden">
+        <div class="joystick-base">
+          <div id="joystick-knob" class="joystick-knob"></div>
+        </div>
+      </div>
+
+      <!-- Instructions -->
+      <div id="instructions" class="instructions hidden">
+        <span id="instructions-text">Use mouse or WASD to move • Reach the green exit</span>
+      </div>
+
+      <!-- Debug Overlay -->
+      <div id="debug-overlay" class="debug-overlay hidden">
+        <div>FPS: <span id="debug-fps">0</span></div>
+        <div>Seed: <span id="debug-seed">0</span></div>
+        <div>Size: <span id="debug-size">0x0</span></div>
+        <div>Pos: <span id="debug-pos">0, 0</span></div>
+        <div>Hits: <span id="debug-hits">0</span></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
