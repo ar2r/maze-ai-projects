@@ -10,6 +10,7 @@ export class CanvasRenderer {
   private ctx: CanvasRenderingContext2D;
   private wallBuffer: OffscreenCanvas | null = null;
   private wallBufferCtx: OffscreenCanvasRenderingContext2D | null = null;
+  private lastMazeSeed: number | null = null;
 
   constructor(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     this.canvas = canvas;
@@ -20,9 +21,13 @@ export class CanvasRenderer {
   private setupHighDPI(): void {
     const dpr = window.devicePixelRatio || 1;
     const rect = this.canvas.getBoundingClientRect();
+    
+    // Use bounding rect if available, otherwise fallback to window dimensions
+    const width = rect.width > 0 ? rect.width : window.innerWidth * 0.9;
+    const height = rect.height > 0 ? rect.height : window.innerHeight * 0.9;
 
-    this.canvas.width = rect.width * dpr;
-    this.canvas.height = rect.height * dpr;
+    this.canvas.width = width * dpr;
+    this.canvas.height = height * dpr;
 
     this.ctx.scale(dpr, dpr);
     this.ctx.imageSmoothingEnabled = true;
@@ -73,6 +78,13 @@ export class CanvasRenderer {
     // Clear
     this.ctx.fillStyle = '#fff';
     this.ctx.fillRect(0, 0, maze.width * maze.cellSize, maze.height * maze.cellSize);
+
+    // Recreate wall buffer if maze changed
+    if (this.lastMazeSeed !== maze.seed) {
+      this.wallBuffer = null;
+      this.wallBufferCtx = null;
+      this.lastMazeSeed = maze.seed;
+    }
 
     // Draw maze (use wall buffer if available)
     if (!this.wallBuffer) {

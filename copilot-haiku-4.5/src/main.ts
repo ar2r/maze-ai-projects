@@ -17,6 +17,9 @@ document.body.appendChild(container);
 
 const canvas = document.createElement('canvas');
 canvas.id = 'gameCanvas';
+// Set initial CSS size before renderer initialization
+canvas.style.width = '90vmin';
+canvas.style.height = '90vmin';
 container.appendChild(canvas);
 
 const ctx = canvas.getContext('2d')!;
@@ -35,12 +38,15 @@ let isPausable = false;
 // State machine
 const stateManager = gameLoop.getStateManager();
 
-gameLoop.setOnStateChanged((state: GameState) => {
+// Create state change handler
+const handleStateChange = (state: GameState) => {
+  console.log('State changed to:', state);
   const savedData = StorageManager.load();
   const currentLevel = stateManager.getState().currentLevel;
 
   switch (state) {
     case GameState.MENU:
+      console.log('Showing main menu');
       uiManager.clearUI();
       uiManager.showMainMenu(savedData != null);
       isPausable = false;
@@ -68,7 +74,9 @@ gameLoop.setOnStateChanged((state: GameState) => {
       uiManager.showSettings(stateManager.getSettings());
       break;
   }
-});
+};
+
+gameLoop.setOnStateChanged(handleStateChange);
 
 gameLoop.setOnRender((_renderCtx, gameState) => {
   if (gameState.state === GameState.PLAYING && gameState.maze) {
@@ -127,7 +135,7 @@ uiManager.setCallbacks({
   onResumeGame: () => {
     stateManager.setPaused(false);
     stateManager.setGameState(GameState.PLAYING);
-    uiManager.clearUI();
+    handleStateChange(GameState.PLAYING);
   },
 
   onSettingsChanged: (settings) => {
@@ -138,6 +146,7 @@ uiManager.setCallbacks({
 
   onMenuOpen: () => {
     stateManager.setGameState(GameState.MENU);
+    handleStateChange(GameState.MENU);
   },
 });
 
@@ -177,6 +186,7 @@ document.addEventListener(
 
 // Start the game
 stateManager.setGameState(GameState.MENU);
+handleStateChange(GameState.MENU);
 gameLoop.start();
 
 console.log('🎮 Maze Game Started');
