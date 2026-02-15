@@ -1,0 +1,37 @@
+{
+  "name": "maze-copilot-sonnet-4.5",
+  "version": "1.0.0",
+  "description": "Client-side maze game with progressive difficulty",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ar2r/maze-copilot-sonnet-4.5.git"
+  },
+  "keywords": [
+    "game",
+    "maze",
+    "typescript",
+    "canvas"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ar2r/maze-copilot-sonnet-4.5/issues"
+  },
+  "homepage": "https://github.com/ar2r/maze-copilot-sonnet-4.5#readme",
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "happy-dom": "^20.6.1",
+    "jsdom": "^28.1.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
+  }
+}

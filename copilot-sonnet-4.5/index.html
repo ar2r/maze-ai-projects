@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="description" content="Navigate through progressively challenging mazes">
+  <title>Maze Game</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div id="app">
+    <div id="menu" class="screen active">
+      <h1>Maze Game</h1>
+      <div class="menu-buttons">
+        <button id="btn-start" class="btn-primary">New Game</button>
+        <button id="btn-continue" class="btn-secondary" style="display: none;">Continue</button>
+        <button id="btn-settings" class="btn-secondary">Settings</button>
+        <button id="btn-help" class="btn-secondary">How to Play</button>
+      </div>
+    </div>
+
+    <div id="game-screen" class="screen">
+      <div id="hud">
+        <div class="hud-left">
+          <span id="level-display">Level: 1</span>
+          <span id="timer-display">00:00</span>
+        </div>
+        <div class="hud-right">
+          <span id="collision-display">Hits: 0</span>
+          <button id="btn-pause" class="btn-icon">⏸</button>
+        </div>
+      </div>
+      <canvas id="game-canvas"></canvas>
+      <div id="touch-controls" class="touch-only">
+        <div id="virtual-joystick"></div>
+      </div>
+    </div>
+
+    <div id="pause-screen" class="screen overlay">
+      <div class="modal">
+        <h2>Paused</h2>
+        <button id="btn-resume" class="btn-primary">Resume</button>
+        <button id="btn-restart" class="btn-secondary">Restart</button>
+        <button id="btn-menu" class="btn-secondary">Main Menu</button>
+      </div>
+    </div>
+
+    <div id="level-complete-screen" class="screen overlay">
+      <div class="modal">
+        <h2>Level Complete!</h2>
+        <div id="stats">
+          <p>Time: <span id="stat-time">-</span></p>
+          <p>Collisions: <span id="stat-collisions">-</span></p>
+          <p id="best-time" style="display: none;">Best: <span id="stat-best">-</span></p>
+        </div>
+        <button id="btn-next" class="btn-primary">Next Level</button>
+        <button id="btn-retry" class="btn-secondary">Retry</button>
+      </div>
+    </div>
+
+    <div id="settings-screen" class="screen overlay">
+      <div class="modal">
+        <h2>Settings</h2>
+        <div class="setting-row">
+          <label for="toggle-sound">Sound Effects</label>
+          <input type="checkbox" id="toggle-sound" checked>
+        </div>
+        <div class="setting-row">
+          <label for="toggle-vibration">Vibration</label>
+          <input type="checkbox" id="toggle-vibration" checked>
+        </div>
+        <div class="setting-row">
+          <label for="select-controls">Control Mode</label>
+          <select id="select-controls">
+            <option value="auto">Auto Detect</option>
+            <option value="mouse">Mouse/Touch</option>
+            <option value="keyboard">Keyboard</option>
+          </select>
+        </div>
+        <button id="btn-settings-close" class="btn-primary">Close</button>
+      </div>
+    </div>
+
+    <div id="help-screen" class="screen overlay">
+      <div class="modal">
+        <h2>How to Play</h2>
+        <div class="help-content">
+          <p><strong>Goal:</strong> Navigate from the green start to the red exit.</p>
+          <p><strong>Desktop:</strong> Use mouse or WASD/Arrow keys</p>
+          <p><strong>Mobile:</strong> Use the virtual joystick</p>
+          <p><strong>Rules:</strong> Don't touch the walls! Levels get progressively harder.</p>
+        </div>
+        <button id="btn-help-close" class="btn-primary">Got it!</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="debug-overlay" style="display: none;"></div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
