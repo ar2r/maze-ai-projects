@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Maze Runner</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <div id="app">
+    <canvas id="game-canvas"></canvas>
+    <div id="ui-layer">
+      <div id="main-menu" class="screen active">
+        <h1>Maze Runner</h1>
+        <p class="subtitle">Navigate through infinite mazes</p>
+        <button id="start-btn">Play</button>
+        <button id="continue-btn" class="hidden">Continue</button>
+        <div class="stats">
+          <p>Best Level: <span id="best-level">0</span></p>
+        </div>
+      </div>
+      <div id="game-ui" class="screen">
+        <div class="hud">
+          <div class="level-display">Level <span id="level-num">1</span></div>
+          <div class="timer">⏱ <span id="timer">0</span>s</div>
+        </div>
+      </div>
+      <div id="level-complete" class="screen">
+        <h2>Level Complete!</h2>
+        <p>Time: <span id="completion-time">0</span>s</p>
+        <button id="next-level-btn">Next Level</button>
+      </div>
+      <div id="game-over" class="screen">
+        <h2>Game Over</h2>
+        <p>You reached Level <span id="final-level">1</span></p>
+        <button id="restart-btn">Play Again</button>
+      </div>
+    </div>
+    <div id="joystick-zone" class="hidden">
+      <div id="joystick-base">
+        <div id="joystick-stick"></div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

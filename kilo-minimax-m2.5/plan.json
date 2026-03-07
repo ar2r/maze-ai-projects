@@ -1,0 +1,28 @@
+{
+  "name": "maze-runner",
+  "description": "Infinite maze navigation game with touch and keyboard controls",
+  "architecture": {
+    "tech": "Vanilla TypeScript + Vite",
+    "canvas": "Multi-layer (offscreen buffer for walls)",
+    "storage": "localStorage"
+  },
+  "maze": {
+    "algorithm": "DFS backtracker",
+    "seed": "level * 12345 + timestamp",
+    "gridSize": "min(5 + level * 0.8, 25)"
+  },
+  "physics": {
+    "collision": "slide factor 0.5 + velocity threshold",
+    "friction": 0.92,
+    "speed": 0.8
+  },
+  "ui": {
+    "touch": "joystick in lower half, touch-action: none",
+    "screens": ["main-menu", "game-ui", "level-complete", "game-over"]
+  },
+  "risks": {
+    "tunneling": "Fast swipes may clip walls - sub-stepping recommended",
+    "ios-safari": "touch-action: none + preventDefault",
+    "resize": "Player position stored in pixels - needs normalization"
+  }
+}

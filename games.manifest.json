@@ -167,5 +167,18 @@
     "accent": "#f472b6",
     "screenshot": null,
     "updatedAt": "2026-02-15T17:39:20+03:00"
+  },
+  {
+    "slug": "kilo-minimax-m2.5",
+    "title": "Maze Runner",
+    "program": "Kilo",
+    "model": "MiniMax M2.5",
+    "tagline": "Infinite maze navigation with touch controls and smooth movement on desktop and mobile.",
+    "summary": "A vanilla TypeScript implementation focused on progressive maze difficulty and responsive controls.",
+    "stack": ["TypeScript", "Vite", "Canvas"],
+    "highlights": ["Touch joystick", "Local progress", "Infinite levels"],
+    "accent": "#f43f5e",
+    "screenshot": null,
+    "updatedAt": "2026-03-07T19:19:14+03:00"
   }
 ]

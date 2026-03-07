@@ -38,6 +38,14 @@ const PROGRAM_META = {
       </svg>
     `,
   },
+  kilo: {
+    className: 'program-default',
+    icon: `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M7 5v14M8 12l9-7M8 12l9 7" />
+      </svg>
+    `,
+  },
   default: {
     className: 'program-default',
     icon: `
@@ -63,6 +71,9 @@ function getProgramKey(program) {
   }
   if (program === 'Gemini') {
     return 'gemini';
+  }
+  if (program === 'Kilo') {
+    return 'kilo';
   }
   return 'default';
 }
