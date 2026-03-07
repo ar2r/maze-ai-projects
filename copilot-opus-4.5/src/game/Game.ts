@@ -21,6 +21,8 @@ import {
   CANVAS_PADDING,
   VIBRATION_DURATION,
   LEVEL_COMPLETE_DELAY,
+  COLLISION_HIT_COOLDOWN,
+  STUCK_HINT_DELAY,
 } from '../utils/constants';
 
 /**
@@ -54,6 +56,13 @@ export class Game {
   // Stats
   private wallHitCount: number = 0;
   private collisionFlashIntensity: number = 0;
+  private lastHitTime: number = 0;  // For collision hit cooldown
+  private lastMoveTime: number = 0;  // For stuck detection
+  private lastPlayerX: number = 0;
+  private lastPlayerY: number = 0;
+  private showHintArrow: boolean = false;
+  private showTutorialArrow: boolean = true;  // Show at start of each level
+  private hasMovedThisLevel: boolean = false;
 
   // Settings
   private settings: Settings;
@@ -221,12 +230,16 @@ export class Game {
 
   /** Calculate level configuration based on level number */
   private getLevelConfig(level: number): LevelConfig {
-    // Increase maze size with level
+    // Early levels (1-3) are simpler with smaller mazes
+    // Level 1: 5x5, Level 2: 6x6, Level 3: 7x7, then grows faster
     const width = Math.min(BASE_MAZE_WIDTH + (level - 1) * SIZE_INCREMENT, MAX_MAZE_SIZE);
     const height = Math.min(BASE_MAZE_HEIGHT + (level - 1) * SIZE_INCREMENT, MAX_MAZE_SIZE);
 
-    // Decrease cell size slightly with level (but not too small)
-    const cellSize = Math.max(BASE_CELL_SIZE - (level - 1) * 1.5, MIN_CELL_SIZE);
+    // Larger cells for early levels (easier navigation), shrinking gradually
+    // Level 1-3: 50px, then decreases by 2px per level until MIN_CELL_SIZE
+    const cellSize = level <= 3 
+      ? BASE_CELL_SIZE 
+      : Math.max(BASE_CELL_SIZE - (level - 3) * 2, MIN_CELL_SIZE);
 
     // Wall thickness stays consistent
     const wallThickness = WALL_THICKNESS;
@@ -288,6 +301,13 @@ export class Game {
     // Reset stats
     this.wallHitCount = 0;
     this.collisionFlashIntensity = 0;
+    this.lastHitTime = 0;
+    this.lastMoveTime = performance.now();
+    this.lastPlayerX = (this.maze.start.x + 0.5) * this.levelConfig.cellSize;
+    this.lastPlayerY = (this.maze.start.y + 0.5) * this.levelConfig.cellSize;
+    this.showHintArrow = false;
+    this.showTutorialArrow = true;
+    this.hasMovedThisLevel = false;
     this.startTime = performance.now();
     this.elapsedTime = 0;
 
@@ -477,17 +497,41 @@ export class Game {
     // Apply collision resolution
     this.player.setPosition(result.newX, result.newY);
 
-    // Handle wall hit
+    // Handle wall hit with cooldown to prevent rapid counting
+    const now = performance.now();
     if (result.collided && (oldX !== result.newX || oldY !== result.newY)) {
-      this.wallHitCount += result.hitCount;
+      // Only count hit if enough time has passed since last hit
+      if (now - this.lastHitTime >= COLLISION_HIT_COOLDOWN) {
+        this.wallHitCount += 1;
+        this.lastHitTime = now;
+        this.debugOverlay.update({ hitCount: this.wallHitCount });
+      }
       this.collisionFlashIntensity = 1;
       this.triggerVibration();
-
-      this.debugOverlay.update({ hitCount: this.wallHitCount });
     }
 
     // Decay collision flash
     this.collisionFlashIntensity = Math.max(0, this.collisionFlashIntensity - dt * 5);
+
+    // Detect if player is stuck (hasn't moved significantly in a while)
+    const moveDistance = Math.sqrt(
+      Math.pow(this.player.state.x - this.lastPlayerX, 2) +
+      Math.pow(this.player.state.y - this.lastPlayerY, 2)
+    );
+    if (moveDistance > 5) {  // Player moved significantly
+      this.lastMoveTime = now;
+      this.lastPlayerX = this.player.state.x;
+      this.lastPlayerY = this.player.state.y;
+      this.showHintArrow = false;
+      // Hide tutorial arrow once player starts moving
+      if (!this.hasMovedThisLevel) {
+        this.hasMovedThisLevel = true;
+        this.showTutorialArrow = false;
+      }
+    } else if (now - this.lastMoveTime > STUCK_HINT_DELAY) {
+      // Player hasn't moved for a while, show hint
+      this.showHintArrow = true;
+    }
 
     // Update debug position
     this.debugOverlay.update({
@@ -514,6 +558,16 @@ export class Game {
         this.canvasOffsetX,
         this.canvasOffsetY
       );
+
+      // Draw pulsating goal effect
+      if (this.state === GameState.PLAYING || this.state === GameState.PAUSED) {
+        this.mazeRenderer.renderGoalPulse(
+          ctx,
+          this.canvasOffsetX,
+          this.canvasOffsetY,
+          performance.now()
+        );
+      }
     }
 
     // Draw player
@@ -536,6 +590,18 @@ export class Game {
         this.canvasOffsetX,
         this.canvasOffsetY
       );
+
+      // Draw hint arrow if player is stuck, or tutorial arrow at start
+      if ((this.showHintArrow || this.showTutorialArrow) && this.state === GameState.PLAYING) {
+        this.mazeRenderer.renderHintArrow(
+          ctx,
+          this.player.state.x,
+          this.player.state.y,
+          this.canvasOffsetX,
+          this.canvasOffsetY,
+          performance.now()
+        );
+      }
     }
   }
 
