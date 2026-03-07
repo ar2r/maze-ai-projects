@@ -24,6 +24,7 @@ function printUsage() {
   console.log('Usage:');
   console.log('  npm run game [name|index]');
   console.log('  npm run games');
+  console.log('  npm run games -- --prompt-after-list');
   console.log('  npm run game -- [name|index] -- --open=false');
 }
 
@@ -97,7 +98,12 @@ function printGameList(games) {
   }
 }
 
-async function promptForGame(games) {
+async function promptForGame(games, options = {}) {
+  const {
+    allowEmpty = false,
+    printList = true,
+    promptText = `[select] Enter game number (1-${games.length}): `,
+  } = options;
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -110,12 +116,17 @@ async function promptForGame(games) {
   });
 
   try {
-    printGameList(games);
+    if (printList) {
+      printGameList(games);
+    }
 
     while (true) {
-      const answer = (await rl.question(
-        `[select] Enter game number (1-${games.length}): `,
-      )).trim();
+      const answer = (await rl.question(promptText)).trim();
+
+      if (allowEmpty && answer === '') {
+        return null;
+      }
+
       const selectedIndex = Number.parseInt(answer, 10);
 
       if (
@@ -247,6 +258,7 @@ async function main() {
 
   const rootDir = process.cwd();
   const games = await discoverGames(rootDir);
+  let selectedGame;
 
   if (games.length === 0) {
     console.error('[select] No game folders with a "dev" script were found.');
@@ -255,13 +267,24 @@ async function main() {
 
   if (options.includes('--list')) {
     printGameList(games);
-    return;
+    if (options.includes('--prompt-after-list')) {
+      selectedGame = await promptForGame(games, {
+        allowEmpty: true,
+        printList: false,
+        promptText: `[select] Enter game number (1-${games.length}) or press Enter to exit: `,
+      });
+      if (!selectedGame) {
+        console.log('[select] No game selected.');
+        return;
+      }
+    } else {
+      return;
+    }
   }
 
-  let selectedGame;
   const firstArg = options.find(opt => !opt.startsWith('-'));
 
-  if (firstArg) {
+  if (!selectedGame && firstArg) {
     // Try as index
     const index = Number.parseInt(firstArg, 10);
     if (Number.isInteger(index) && index >= 1 && index <= games.length) {
@@ -274,7 +297,7 @@ async function main() {
       printGameList(games);
       process.exit(1);
     }
-  } else {
+  } else if (!selectedGame) {
     selectedGame = await promptForGame(games);
   }
 

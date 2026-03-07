@@ -11,7 +11,7 @@ A root launcher is available to run any game from this repository without typing
 
 ### Commands
 
-- `make games` - show the numbered list of available games.
+- `make games` - show the numbered list of available games, then optionally run one by number or press `Enter` to exit.
 - `make game` - open interactive selection, choose a game by number, then start it.
 - `make game GAME=1` - skip selection and run game #1.
 - `make game GAME=copilot-gemini-3` - skip selection and run game by folder name.
