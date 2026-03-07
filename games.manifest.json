@@ -9,7 +9,8 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Audio + vibration", "HiDPI canvas", "Debug overlay"],
     "accent": "#fdba74",
-    "screenshot": "claude-sonnet-4.5/assets/screenshot-game.svg"
+    "screenshot": "claude-sonnet-4.5/assets/screenshot-game.svg",
+    "updatedAt": "2026-02-15T15:56:44+03:00"
   },
   {
     "slug": "codex-gpt-5.1-codex-max-xhigh",
@@ -21,7 +22,8 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Seed URL support", "Pause + results", "Mobile controls"],
     "accent": "#fb7185",
-    "screenshot": "codex-gpt-5.1-codex-max-xhigh/docs/screenshots/ingame.svg"
+    "screenshot": "codex-gpt-5.1-codex-max-xhigh/docs/screenshots/ingame.svg",
+    "updatedAt": "2026-02-15T15:56:44+03:00"
   },
   {
     "slug": "codex-gpt-5.2-codex-xhigh",
@@ -33,7 +35,8 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Debug mode", "Responsive layout", "Progressive difficulty"],
     "accent": "#38bdf8",
-    "screenshot": "codex-gpt-5.2-codex-xhigh/assets/screenshots/gameplay.svg"
+    "screenshot": "codex-gpt-5.2-codex-xhigh/assets/screenshots/gameplay.svg",
+    "updatedAt": "2026-02-15T15:56:44+03:00"
   },
   {
     "slug": "codex-gpt-5.3-codex-xhigh",
@@ -45,7 +48,8 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Structured engine", "Settings flow", "Seeded mazes"],
     "accent": "#818cf8",
-    "screenshot": "codex-gpt-5.3-codex-xhigh/docs/screenshots/gameplay.png"
+    "screenshot": "codex-gpt-5.3-codex-xhigh/docs/screenshots/gameplay.png",
+    "updatedAt": "2026-02-15T15:56:44+03:00"
   },
   {
     "slug": "codex-gpt-5.4",
@@ -57,7 +61,8 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Deterministic DFS", "Layered renderer", "Local progress"],
     "accent": "#22d3ee",
-    "screenshot": null
+    "screenshot": null,
+    "updatedAt": "2026-03-07T14:45:32+03:00"
   },
   {
     "slug": "copilot-gemini-3",
@@ -69,7 +74,8 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Infinite levels", "Offline-friendly", "Simple physics"],
     "accent": "#34d399",
-    "screenshot": null
+    "screenshot": null,
+    "updatedAt": "2026-02-15T18:00:09+03:00"
   },
   {
     "slug": "copilot-gpt-5.3-codex",
@@ -81,7 +87,8 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Seeded runs", "Virtual joystick", "Anti-tunneling"],
     "accent": "#f59e0b",
-    "screenshot": "copilot-gpt-5.3-codex/public/screenshots/gameplay.svg"
+    "screenshot": "copilot-gpt-5.3-codex/public/screenshots/gameplay.svg",
+    "updatedAt": "2026-02-15T15:56:44+03:00"
   },
   {
     "slug": "copilot-gpt-5.4",
@@ -93,7 +100,8 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Procedural sound", "HiDPI support", "Joystick mode"],
     "accent": "#f97316",
-    "screenshot": null
+    "screenshot": null,
+    "updatedAt": "2026-03-07T14:45:50+03:00"
   },
   {
     "slug": "copilot-haiku-4.5",
@@ -105,7 +113,8 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Node tests"],
     "highlights": ["Full menu flow", "Persistence", "QA docs"],
     "accent": "#a78bfa",
-    "screenshot": null
+    "screenshot": null,
+    "updatedAt": "2026-02-15T20:38:52+03:00"
   },
   {
     "slug": "copilot-opus-4.5",
@@ -117,7 +126,8 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["No runtime deps", "Touch support", "F3 debug"],
     "accent": "#60a5fa",
-    "screenshot": "copilot-opus-4.5/screenshots/gameplay.svg"
+    "screenshot": "copilot-opus-4.5/screenshots/gameplay.svg",
+    "updatedAt": "2026-02-15T15:56:46+03:00"
   },
   {
     "slug": "copilot-opus-4.6",
@@ -129,7 +139,8 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Audio settings", "Vibration", "Detailed QA"],
     "accent": "#2dd4bf",
-    "screenshot": "copilot-opus-4.6/screenshots/04-gameplay-level10.svg"
+    "screenshot": "copilot-opus-4.6/screenshots/04-gameplay-level10.svg",
+    "updatedAt": "2026-02-15T15:56:47+03:00"
   },
   {
     "slug": "copilot-sonnet-4.5",
@@ -141,7 +152,8 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Dark theme", "Settings screen", "Cross-platform controls"],
     "accent": "#c084fc",
-    "screenshot": null
+    "screenshot": null,
+    "updatedAt": "2026-02-15T16:01:31+03:00"
   },
   {
     "slug": "gemini-3",
@@ -153,6 +165,7 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Pacman avatar", "Retro fantasy UI", "Offscreen canvas"],
     "accent": "#f472b6",
-    "screenshot": null
+    "screenshot": null,
+    "updatedAt": "2026-02-15T17:39:20+03:00"
   }
 ]

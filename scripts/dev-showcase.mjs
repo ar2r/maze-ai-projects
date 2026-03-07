@@ -6,7 +6,6 @@ import { mkdir, readFile, stat } from 'node:fs/promises';
 import http from 'node:http';
 import path from 'node:path';
 import process from 'node:process';
-import { getGameUpdatedAt } from './game-updated-at.mjs';
 
 const rootDir = process.cwd();
 const showcaseDir = path.join(rootDir, 'showcase');
@@ -39,6 +38,13 @@ function nodeCommand() {
 
 function toPosix(value) {
   return value.split(path.sep).join('/');
+}
+
+function getManifestUpdatedAt(game) {
+  if (typeof game.updatedAt !== 'string' || Number.isNaN(Date.parse(game.updatedAt))) {
+    throw new Error(`Game "${game.slug}" is missing a valid updatedAt timestamp in games.manifest.json`);
+  }
+  return game.updatedAt;
 }
 
 function sendJson(response, statusCode, payload) {
@@ -88,12 +94,10 @@ async function loadManifest() {
       screenshot = route;
     }
 
-    const updatedAt = await getGameUpdatedAt(rootDir, game.slug);
-
     return {
       ...game,
       route: `/games/${game.slug}/`,
-      updatedAt,
+      updatedAt: getManifestUpdatedAt(game),
       screenshot,
     };
   }));

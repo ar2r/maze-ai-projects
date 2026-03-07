@@ -4,7 +4,6 @@ import { spawn } from 'node:child_process';
 import { cp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import { getGameUpdatedAt } from './game-updated-at.mjs';
 
 const rootDir = process.cwd();
 const outputDir = path.join(rootDir, 'site-dist');
@@ -22,6 +21,13 @@ function npmCommand() {
 
 function toPosix(filePath) {
   return filePath.split(path.sep).join('/');
+}
+
+function getManifestUpdatedAt(game) {
+  if (typeof game.updatedAt !== 'string' || Number.isNaN(Date.parse(game.updatedAt))) {
+    throw new Error(`Game "${game.slug}" is missing a valid updatedAt timestamp in games.manifest.json`);
+  }
+  return game.updatedAt;
 }
 
 async function pathExists(targetPath) {
@@ -98,11 +104,10 @@ const runtimeManifest = [];
 for (const game of manifest) {
   await buildGame(game);
   const screenshot = await copyScreenshot(game);
-  const updatedAt = await getGameUpdatedAt(rootDir, game.slug);
   runtimeManifest.push({
     ...game,
     route: `/games/${game.slug}/`,
-    updatedAt,
+    updatedAt: getManifestUpdatedAt(game),
     screenshot: screenshot ? `./${toPosix(screenshot)}` : null,
   });
 }
