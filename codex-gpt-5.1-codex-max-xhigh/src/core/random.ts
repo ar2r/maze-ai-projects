@@ -13,11 +13,13 @@ export class RNG {
     x ^= x >>> 17;
     x ^= x << 5;
     this.state = x >>> 0;
-    return (this.state & 0xffffffff) / 0x100000000;
+    return this.state / 0x100000000;
   }
 
   nextInt(max: number): number {
-    return Math.floor(this.next() * max);
+    if (max <= 0) return 0;
+    const n = Math.floor(this.next() * max);
+    return n >= max ? max - 1 : n;
   }
 
   shuffle<T>(arr: T[]): T[] {
