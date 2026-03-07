@@ -168,7 +168,7 @@ Workflow лежит в [.github/workflows/ci.yml](/Users/artur/AiTesting/maze-ai
 | `copilot-opus-4.5` | GitHub Copilot | Opus 4.5 |
 | `copilot-opus-4.6` | GitHub Copilot | Opus 4.6 |
 | `copilot-sonnet-4.5` | GitHub Copilot | Sonnet 4.5 |
-| `gemini-3` | Gemini | Gemini 3 |
+| `gemini-gemini-3.1-pro-preview` | Gemini | Gemini 3 |
 
 ## Полезные файлы
 
