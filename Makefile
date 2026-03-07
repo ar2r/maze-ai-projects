@@ -1,8 +1,10 @@
-.PHONY: help games game site site-preview
+.PHONY: help games game site site-preview docker-build docker-run
 
 NPM ?= npm
 GAME ?=
 GAME_ARGS ?=
+IMAGE ?= maze-ai-showcase
+PORT ?= 3000
 
 help:
 	@echo "Available commands:"
@@ -13,6 +15,8 @@ help:
 	@echo "  make game GAME_ARGS=\"--open=false\"  Pass extra Vite dev args"
 	@echo "  make site                          Build the unified showcase site into site-dist/"
 	@echo "  make site-preview                  Serve the built site locally at http://127.0.0.1:4173"
+	@echo "  make docker-build                  Build the Docker image ($(IMAGE))"
+	@echo "  make docker-run                    Run the Docker image on http://127.0.0.1:$(PORT)"
 
 games:
 	@$(NPM) run games -- --prompt-after-list
@@ -25,3 +29,9 @@ site:
 
 site-preview:
 	@$(NPM) run site:preview
+
+docker-build:
+	@docker build -t $(IMAGE) .
+
+docker-run:
+	@docker run --rm -p $(PORT):3000 $(IMAGE)

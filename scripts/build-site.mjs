@@ -4,6 +4,7 @@ import { spawn } from 'node:child_process';
 import { cp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
+import { getGameUpdatedAt } from './game-updated-at.mjs';
 
 const rootDir = process.cwd();
 const outputDir = path.join(rootDir, 'site-dist');
@@ -97,9 +98,11 @@ const runtimeManifest = [];
 for (const game of manifest) {
   await buildGame(game);
   const screenshot = await copyScreenshot(game);
+  const updatedAt = await getGameUpdatedAt(rootDir, game.slug);
   runtimeManifest.push({
     ...game,
     route: `/games/${game.slug}/`,
+    updatedAt,
     screenshot: screenshot ? `./${toPosix(screenshot)}` : null,
   });
 }

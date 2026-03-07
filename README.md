@@ -1,44 +1,93 @@
 # maze-ai-projects
 
-## Game launcher
+Единая AI-витрина для 13 игр-лабиринтов, собранных разными программами и моделями.  
+Одна страница показывает, чем отличается каждая сборка: `программа`, `модель`, `обновлено`, `запуск`.
 
-A root launcher is available to run any game from this repository without typing folder names manually.
+## Что это
 
-### Requirements
+В репозитории собраны отдельные реализации одной и той же игры, сделанные через:
+- `Claude`
+- `Codex`
+- `GitHub Copilot`
+- `Gemini`
 
-- `node` and `npm`
-- `make`
+Поверх них сделан общий web-интерфейс в папке `showcase/`.  
+Он открывает все игры из одного места и позволяет быстро сравнивать результаты разных AI-инструментов.
 
-### Commands
+## Что видно в витрине
 
-- `make games` - show the numbered list of available games, then optionally run one by number or press `Enter` to exit.
-- `make game` - open interactive selection, choose a game by number, then start it.
-- `make game GAME=1` - skip selection and run game #1.
-- `make game GAME=copilot-gemini-3` - skip selection and run game by folder name.
-- `make game GAME_ARGS="--open=false"` - pass extra Vite dev args (e.g., disable auto-opening browser).
+- программа, которой была собрана игра
+- модель
+- относительное время последнего обновления
+- прямой запуск каждой игры
+- фильтры по программам
 
-### Runtime behavior
+По умолчанию самые свежие изменения находятся сверху.
 
-- After selecting a game, the launcher prints the game URL: `http://127.0.0.1:3000`.
-- All games run on a fixed port: `3000`.
-- If port `3000` is busy, startup fails (strict port mode).
-- The game runs in foreground (not daemonized).
-- Stop the running game with `Ctrl+C`.
+## Быстрый запуск
 
-## Игры в репозитории
+Для локальной разработки витрины:
 
-Все проекты — клиентские игры-лабиринты (TypeScript + Vite + Canvas), но каждая папка содержит отдельную реализацию.
+```bash
+npm run dev
+```
 
-| Папка | Название игры | Краткий функционал | Чем отличается |
-| --- | --- | --- | --- |
-| `claude-sonnet-4.5` | Maze Runner - Escape the Labyrinth | Процедурная генерация, прогрессия уровней, управление на ПК/мобайле, сохранение прогресса | Акцент на кроссплатформенный UX: звук + вибрация, performance/debug overlay, HiDPI и offscreen-рендер |
-| `codex-gpt-5.1-codex-max-xhigh` | Maze Sprint | Генерация лабиринтов по seed, рост сложности, управление на ПК/мобайле, пауза/результаты/прогресс | Явная воспроизводимость через `?seed=...`, подробный QA-чеклист в README |
-| `codex-gpt-5.2-codex-xhigh` | Maze Drift | Классический прогрессивный лабиринт с desktop/mobile управлением и debug-режимом | Более компактная реализация и документация; debug включается через URL или `localStorage['maze-debug']=1` |
-| `codex-gpt-5.3-codex-xhigh` | Maze Runner | Случайные лабиринты, рост сложности, настройки/debug overlay, `localStorage` | Более структурированный движок + отдельный `test:run` и QA test plan |
-| `copilot-gemini-3` | Maze Runner | Процедурная генерация, бесконечные уровни, адаптивное управление, оффлайн-режим | Реализация на чистом Canvas API без лишних зависимостей, фокус на производительности и простоте |
-| `copilot-gpt-5.3-codex` | Maze Runner | Генерация по seed, несколько режимов ввода, пауза/рестарт, сохранение прогресса | Отмечены петли/комнаты на высоких уровнях и anti-tunneling коллизии |
-| `copilot-haiku-4.5` | Maze Runner - HTML5 Game | Полный цикл игры, адаптивное управление, счёт/результаты, сохранение, debug overlay | Для тестов используется `node tests/simple-test.js` (без Vitest), есть `VERIFICATION.md` |
-| `copilot-opus-4.5` | Maze Game | DFS-генерация, рост сложности, keyboard/mouse/touch управление, сохранение | Подчёркнуто отсутствие runtime-зависимостей; debug overlay по `F3` |
-| `copilot-opus-4.6` | Maze Runner | Полноценная игра с настройками, аудио, вибрацией, сохранением, debug overlay | Наиболее явно описана система настроек (Auto/Mouse/Keyboard/Joystick) и QA-чеклист |
-| `copilot-sonnet-4.5` | Maze Game | Прогрессивная сложность, кроссплатформенное управление, `localStorage`, unit-тесты | По умолчанию dev-сервер на `http://localhost:3000`; акцент на dark theme и дополнительные петли с 12+ уровня |
-| `gemini-3` | Neon Maze Escape | Кроссовер-стилистика (Heroes of Might and Magic + Pacman), процедурная генерация, анимированный персонаж | Уникальный визуальный стиль: каменные стены, пергаментный интерфейс; анимированный Pacman; высокая производительность через Offscreen Canvas |
+UI откроется на `http://127.0.0.1:3000`.
+
+Если порт занят:
+
+```bash
+PORT=3001 npm run dev
+```
+
+## Production-сборка
+
+Собрать unified site:
+
+```bash
+npm run site:build
+```
+
+Локально посмотреть готовую сборку:
+
+```bash
+npm run site:preview
+```
+
+## Docker
+
+Весь UI и все игры собираются в одном контейнере.
+
+```bash
+make docker-build
+make docker-run
+```
+
+По умолчанию контейнер поднимается на `http://127.0.0.1:3000`.
+
+## Программы и модели
+
+| Папка | Программа | Модель |
+| --- | --- | --- |
+| `claude-sonnet-4.5` | Claude | Sonnet 4.5 |
+| `codex-gpt-5.1-codex-max-xhigh` | Codex | GPT-5.1 Codex Max xhigh |
+| `codex-gpt-5.2-codex-xhigh` | Codex | GPT-5.2 Codex xhigh |
+| `codex-gpt-5.3-codex-xhigh` | Codex | GPT-5.3 Codex xhigh |
+| `codex-gpt-5.4` | Codex | GPT-5.4 |
+| `copilot-gemini-3` | GitHub Copilot | Gemini 3 |
+| `copilot-gpt-5.3-codex` | GitHub Copilot | GPT-5.3 Codex |
+| `copilot-gpt-5.4` | GitHub Copilot | GPT-5.4 |
+| `copilot-haiku-4.5` | GitHub Copilot | Haiku 4.5 |
+| `copilot-opus-4.5` | GitHub Copilot | Opus 4.5 |
+| `copilot-opus-4.6` | GitHub Copilot | Opus 4.6 |
+| `copilot-sonnet-4.5` | GitHub Copilot | Sonnet 4.5 |
+| `gemini-3` | Gemini | Gemini 3 |
+
+## Полезные файлы
+
+- [showcase/index.html](/Users/artur/AiTesting/maze-ai-projects/showcase/index.html)
+- [showcase/main.js](/Users/artur/AiTesting/maze-ai-projects/showcase/main.js)
+- [showcase/styles.css](/Users/artur/AiTesting/maze-ai-projects/showcase/styles.css)
+- [games.manifest.json](/Users/artur/AiTesting/maze-ai-projects/games.manifest.json)
+- [package.json](/Users/artur/AiTesting/maze-ai-projects/package.json)
+- [Dockerfile](/Users/artur/AiTesting/maze-ai-projects/Dockerfile)
