@@ -180,5 +180,18 @@
     "accent": "#f43f5e",
     "screenshot": null,
     "updatedAt": "2026-03-07T19:19:14+03:00"
+  },
+  {
+    "slug": "ollama-glm-5",
+    "title": "Maze Runner",
+    "program": "Ollama",
+    "model": "GLM-5",
+    "tagline": "Structured maze engine with settings, controls, and progressive difficulty up to level 20.",
+    "summary": "A well-architected implementation featuring multiple control modes, vibration feedback, and local progress tracking.",
+    "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
+    "highlights": ["Settings UI", "Vibration feedback", "20 levels"],
+    "accent": "#10b981",
+    "screenshot": null,
+    "updatedAt": "2026-03-07T21:20:00+03:00"
   }
 ]

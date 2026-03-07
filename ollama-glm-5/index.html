@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1a1a2e">
+  <title>Maze Game</title>
+  <link rel="stylesheet" href="./src/styles/main.css">
+</head>
+<body>
+  <div id="app">
+    <canvas id="game-canvas"></canvas>
+    <div id="menu" class="screen">
+      <h1>Maze</h1>
+      <button id="btn-start" class="btn">Start Game</button>
+      <button id="btn-continue" class="btn hidden">Continue</button>
+      <button id="btn-settings" class="btn">Settings</button>
+    </div>
+    <div id="game-ui" class="hidden">
+      <div id="hud">
+        <span id="level-display">Level: 1</span>
+        <span id="timer-display">00:00</span>
+      </div>
+    </div>
+    <div id="results" class="screen hidden">
+      <h2>Level Complete!</h2>
+      <div id="results-content">
+        <p>Time: <span id="result-time">00:00</span></p>
+        <p>Wall Hits: <span id="result-hits">0</span></p>
+        <p>Best Time: <span id="result-best">--:--</span></p>
+      </div>
+      <button id="btn-next" class="btn">Next Level</button>
+      <button id="btn-retry" class="btn">Retry</button>
+      <button id="btn-menu" class="btn">Main Menu</button>
+    </div>
+    <div id="settings" class="screen hidden">
+      <h2>Settings</h2>
+      <div class="setting-row">
+        <label>Sound</label>
+        <input type="checkbox" id="setting-sound" checked>
+      </div>
+      <div class="setting-row">
+        <label>Vibration</label>
+        <input type="checkbox" id="setting-vibration" checked>
+      </div>
+      <div class="setting-row">
+        <label>Control Mode</label>
+        <select id="setting-control">
+          <option value="mouse">Mouse Follow</option>
+          <option value="follow">Cursor Follow</option>
+          <option value="joystick">Virtual Joystick</option>
+        </select>
+      </div>
+      <button id="btn-settings-back" class="btn">Back</button>
+    </div>
+    <div id="joystick-container" class="hidden">
+      <div id="joystick-base">
+        <div id="joystick-stick"></div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="./src/main.ts"></script>
+</body>
+</html>
