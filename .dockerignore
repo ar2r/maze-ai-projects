@@ -1,0 +1,9 @@
+.git
+.gitignore
+.idea
+.claude
+node_modules
+site-dist
+*/node_modules
+*/dist
+*.log

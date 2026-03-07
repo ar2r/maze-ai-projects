@@ -4,6 +4,9 @@
   "private": true,
   "scripts": {
     "game": "node ./scripts/run-game-dev.mjs",
-    "games": "node ./scripts/run-game-dev.mjs --list"
+    "games": "node ./scripts/run-game-dev.mjs --list",
+    "site:install": "node ./scripts/install-all.mjs",
+    "site:build": "node ./scripts/build-site.mjs",
+    "site:preview": "python3 -m http.server 4173 -d site-dist"
   }
 }

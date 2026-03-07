@@ -1,0 +1,339 @@
+:root {
+  --color-bg: #1a1a2e;
+  --color-surface: #16213e;
+  --color-primary: #0f3460;
+  --color-accent: #e94560;
+  --color-text: #eee;
+  --color-text-dim: #aaa;
+  --color-success: #2ecc71;
+  --color-warning: #f39c12;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.screen {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+.screen.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+}
+
+.modal {
+  background: var(--color-surface);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  color: var(--color-accent);
+  text-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: var(--color-accent);
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 300px;
+}
+
+button {
+  font-family: inherit;
+  font-size: 1.1rem;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+button:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #d63851;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(233, 69, 96, 0.4);
+}
+
+.btn-secondary {
+  background: var(--color-primary);
+  color: var(--color-text);
+}
+
+.btn-secondary:hover {
+  background: #0e2f54;
+  transform: translateY(-2px);
+}
+
+.btn-icon {
+  background: transparent;
+  color: var(--color-text);
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#game-screen {
+  position: relative;
+  background: var(--color-bg);
+}
+
+#hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background: linear-gradient(to bottom, rgba(26, 26, 46, 0.9), transparent);
+  z-index: 10;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.hud-left,
+.hud-right {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+#game-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--color-bg);
+}
+
+#touch-controls {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 10;
+}
+
+#virtual-joystick {
+  width: 120px;
+  height: 120px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  position: relative;
+}
+
+#virtual-joystick::after {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: rgba(233, 69, 96, 0.6);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.touch-only {
+  display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .touch-only {
+    display: block;
+  }
+}
+
+#stats {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+#stats p {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--color-primary);
+}
+
+.setting-row:last-of-type {
+  border-bottom: none;
+}
+
+input[type="checkbox"] {
+  width: 50px;
+  height: 26px;
+  appearance: none;
+  background: var(--color-primary);
+  border-radius: 13px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+input[type="checkbox"]:checked {
+  background: var(--color-accent);
+}
+
+input[type="checkbox"]::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.3s;
+}
+
+input[type="checkbox"]:checked::after {
+  transform: translateX(24px);
+}
+
+select {
+  background: var(--color-primary);
+  color: var(--color-text);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.help-content {
+  text-align: left;
+  line-height: 1.6;
+}
+
+.help-content p {
+  margin-bottom: 1rem;
+}
+
+#debug-overlay {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #0f0;
+  font-family: monospace;
+  font-size: 12px;
+  padding: 10px;
+  border-radius: 4px;
+  z-index: 1000;
+  pointer-events: none;
+  max-width: 300px;
+}
+
+#debug-overlay div {
+  margin: 2px 0;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  .menu-buttons {
+    width: 90%;
+  }
+
+  .modal {
+    padding: 1.5rem;
+  }
+
+  #hud {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+
+  #touch-controls {
+    bottom: 1rem;
+    left: 1rem;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .modal {
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+}

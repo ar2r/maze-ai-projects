@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="AI-crafted maze games collected in one cinematic web showcase."
+    />
+    <title>AI Maze Arcade</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <div class="ambient ambient-a"></div>
+      <div class="ambient ambient-b"></div>
+      <div class="noise"></div>
+
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="AI Maze Arcade home">
+          <span class="brand-mark"></span>
+          <span class="brand-copy">
+            <strong>AI Maze Arcade</strong>
+            <span>One container. Many model-built worlds.</span>
+          </span>
+        </a>
+        <nav class="topbar-nav">
+          <a href="#games">Games</a>
+          <a href="#provenance">AI Provenance</a>
+          <a href="#stack">Stack</a>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div class="hero-copy" data-reveal>
+            <p class="eyebrow">AI-crafted showcase</p>
+            <h1>
+              Vibe-coded maze games,
+              <span>stacked into one cinematic launcher.</span>
+            </h1>
+            <p class="hero-text">
+              A unified interface for every maze experiment in this repository, with
+              explicit program + model provenance on every card and a production path
+              that ships in one Docker container.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#games">Explore games</a>
+              <a class="button button-secondary" href="#provenance">See model matrix</a>
+            </div>
+            <div class="hero-marquee" aria-label="AI showcase highlights">
+              <span>Codex</span>
+              <span>GitHub Copilot</span>
+              <span>Claude</span>
+              <span>Gemini</span>
+              <span>TypeScript</span>
+              <span>Canvas</span>
+              <span>Single Docker Image</span>
+            </div>
+          </div>
+
+          <aside class="hero-panel" data-reveal>
+            <div class="panel-header">
+              <p class="panel-kicker">Live catalog</p>
+              <p class="panel-title">Model provenance at a glance</p>
+            </div>
+            <div class="stat-grid">
+              <article class="stat-card">
+                <span class="stat-label">Games</span>
+                <strong id="stat-games">0</strong>
+              </article>
+              <article class="stat-card">
+                <span class="stat-label">Programs</span>
+                <strong id="stat-programs">0</strong>
+              </article>
+              <article class="stat-card">
+                <span class="stat-label">Model lines</span>
+                <strong id="stat-models">0</strong>
+              </article>
+              <article class="stat-card">
+                <span class="stat-label">Runtime</span>
+                <strong>Docker</strong>
+              </article>
+            </div>
+            <div class="signal-card">
+              <p class="signal-title">Built with modern AI tooling</p>
+              <p class="signal-text">
+                Every card shows exactly which program assembled the game and which
+                model family drove the output.
+              </p>
+            </div>
+          </aside>
+        </section>
+
+        <section class="section" id="games">
+          <div class="section-heading" data-reveal>
+            <div>
+              <p class="eyebrow">Game picker</p>
+              <h2>Pick a build, inspect its AI provenance, then launch.</h2>
+            </div>
+            <p class="section-text">
+              Filter by program and compare how different model families translated the
+              same maze brief into different gameplay and visual choices.
+            </p>
+          </div>
+
+          <div class="filters" data-reveal>
+            <div class="filter-group" id="program-filters" aria-label="Program filters"></div>
+          </div>
+
+          <div class="featured-card" data-reveal>
+            <div class="featured-copy">
+              <p class="eyebrow">Featured mode</p>
+              <h3>One gallery, many AI personalities.</h3>
+              <p>
+                The launcher is designed as a premium AI showcase, not a plain directory:
+                motion, glass, provenance chips, and clear “built in X with Y” labeling.
+              </p>
+            </div>
+            <div class="featured-tags">
+              <span>AI-native UI</span>
+              <span>Motion-rich landing</span>
+              <span>Single-image deployment</span>
+            </div>
+          </div>
+
+          <div class="games-grid" id="games-grid" aria-live="polite"></div>
+        </section>
+
+        <section class="section provenance" id="provenance">
+          <div class="section-heading" data-reveal>
+            <div>
+              <p class="eyebrow">AI provenance</p>
+              <h2>Program and model are first-class UI elements.</h2>
+            </div>
+            <p class="section-text">
+              The main page intentionally surfaces the tooling story: which assistant was
+              used, which model series powered it, and what kind of result it produced.
+            </p>
+          </div>
+
+          <div class="provenance-grid">
+            <article class="provenance-card" data-reveal>
+              <span class="chip">Program</span>
+              <h3>Visible on every card</h3>
+              <p>Codex, GitHub Copilot, Claude, and Gemini are rendered as prominent badges.</p>
+            </article>
+            <article class="provenance-card" data-reveal>
+              <span class="chip">Model</span>
+              <h3>Readable model naming</h3>
+              <p>Model strings are normalized into human-facing labels rather than raw folder slugs.</p>
+            </article>
+            <article class="provenance-card" data-reveal>
+              <span class="chip">Vibe</span>
+              <h3>Modern AI positioning</h3>
+              <p>Copy and animation lean into AI showcase energy instead of a conventional admin dashboard.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section stack" id="stack">
+          <div class="stack-panel" data-reveal>
+            <p class="eyebrow">Deployment story</p>
+            <h2>All UI and all games, shipped from one container.</h2>
+            <p>
+              The production setup builds each Vite game into a dedicated subdirectory and
+              serves the showcase landing page plus all games from one static `nginx`
+              image. No separate frontend gateway, no backend dependency.
+            </p>
+            <div class="stack-tags">
+              <span>Multi-stage Docker</span>
+              <span>Static nginx runtime</span>
+              <span>Per-game routes</span>
+              <span>Shared metadata manifest</span>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <template id="game-card-template">
+      <article class="game-card" data-reveal>
+        <div class="card-media">
+          <a class="card-link-overlay" data-card-link href="#">
+            <span class="sr-only">Open game</span>
+          </a>
+          <img class="card-shot" alt="" loading="lazy" />
+          <div class="card-glow"></div>
+          <div class="card-fallback">
+            <span>AI Maze</span>
+            <strong data-fallback-title></strong>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-topline">
+            <span class="card-program" data-program></span>
+            <span class="card-model" data-model></span>
+          </div>
+          <h3 data-title></h3>
+          <p class="card-tagline" data-tagline></p>
+          <p class="card-summary" data-summary></p>
+          <div class="pill-row" data-highlights></div>
+          <dl class="meta-grid">
+            <div>
+              <dt>Program</dt>
+              <dd data-program-meta></dd>
+            </div>
+            <div>
+              <dt>Model</dt>
+              <dd data-model-meta></dd>
+            </div>
+            <div>
+              <dt>Stack</dt>
+              <dd data-stack></dd>
+            </div>
+          </dl>
+          <div class="card-footer">
+            <span class="provenance-line" data-provenance></span>
+            <a class="button button-inline" data-cta href="#">Launch game</a>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
