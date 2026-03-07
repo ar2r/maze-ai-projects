@@ -65,6 +65,21 @@ make docker-run
 
 По умолчанию контейнер поднимается на `http://127.0.0.1:3000`.
 
+## CI/CD
+
+В репозитории используется двухэтапный workflow, аналогичный `fidonet`:
+
+- `pull_request` в `master`: проверка сборки через `npm run site:install` и `npm run site:build`
+- `push` в `master`: после успешной проверки собирается и публикуется Docker-образ в `ghcr.io/<owner>/<repo>:latest`
+- после публикации образа вызывается deployment webhook, если в GitHub Variables задан `DEPLOY_WEBHOOK_URL`
+
+Для включения выката нужны настройки репозитория на GitHub:
+
+- `Actions` должны иметь право `Read and write permissions` для `GITHUB_TOKEN`, чтобы workflow мог публиковать образ в GHCR
+- `Repository variable`: `DEPLOY_WEBHOOK_URL`
+
+Workflow лежит в [.github/workflows/ci.yml](/Users/artur/AiTesting/maze-ai-projects/.github/workflows/ci.yml).
+
 ## Программы и модели
 
 | Папка | Программа | Модель |

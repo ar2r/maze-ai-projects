@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { spawn } from 'node:child_process';
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 
@@ -11,6 +11,16 @@ const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
 
 function npmCommand() {
   return process.platform === 'win32' ? 'npm.cmd' : 'npm';
+}
+
+async function hasPackageLock(gameDir) {
+  try {
+    const lockPath = path.join(gameDir, 'package-lock.json');
+    const info = await stat(lockPath);
+    return info.isFile();
+  } catch {
+    return false;
+  }
 }
 
 function run(command, args, cwd) {
@@ -33,6 +43,7 @@ function run(command, args, cwd) {
 
 for (const game of manifest) {
   const gameDir = path.join(rootDir, game.slug);
-  console.log(`[install] ${game.slug}`);
-  await run(npmCommand(), ['install'], gameDir);
+  const installMode = (await hasPackageLock(gameDir)) ? 'ci' : 'install';
+  console.log(`[install] ${game.slug} (${installMode})`);
+  await run(npmCommand(), [installMode], gameDir);
 }
