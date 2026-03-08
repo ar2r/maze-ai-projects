@@ -49,6 +49,7 @@ export class Game {
   private resizeCanvas(): void {
     const dpr = window.devicePixelRatio || 1;
     const rect = this.canvas.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return;
     this.canvas.width = rect.width * dpr;
     this.canvas.height = rect.height * dpr;
     this.ctx.scale(dpr, dpr);
@@ -120,6 +121,7 @@ export class Game {
   }
 
   private startGameLoop(): void {
+    this.resizeCanvas();
     if (this.animationFrameId === null) {
       this.lastFrameTime = performance.now();
       this.gameLoop();
