@@ -127,7 +127,7 @@ export class GameLoop {
     // Movement based on control mode
     const controlMode = state.settings.controlMode;
 
-    if (controlMode === 'mouse-follow' && input.mousePressed) {
+    if (controlMode === 'mouse-follow') {
       movePlayerTowardTarget(player, input.mouse.x, input.mouse.y, PLAYER_SPEED);
     } else if (controlMode === 'wasd') {
       movePlayerByInput(
