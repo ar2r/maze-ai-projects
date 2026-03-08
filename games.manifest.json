@@ -193,5 +193,18 @@
     "accent": "#10b981",
     "screenshot": null,
     "updatedAt": "2026-03-07T21:20:00+03:00"
+  },
+  {
+    "slug": "ollama-kimi-k2.5",
+    "title": "Maze Runner",
+    "program": "Ollama",
+    "model": "Kimi K2.5",
+    "tagline": "Maze navigation with progressive difficulty and responsive controls.",
+    "summary": "A TypeScript maze game built with Vite and Canvas featuring touch controls and local progress tracking.",
+    "stack": ["TypeScript", "Vite", "Canvas"],
+    "highlights": ["Touch controls", "Progressive difficulty", "Local progress"],
+    "accent": "#6366f1",
+    "screenshot": null,
+    "updatedAt": "2026-03-08T19:30:00+03:00"
   }
 ]
