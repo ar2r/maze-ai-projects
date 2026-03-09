@@ -14,21 +14,17 @@
     <main class="viewer-shell">
       <header class="viewer-topbar">
         <a class="button button-ghost viewer-back" id="viewer-back" href="./#games">К каталогу</a>
-        <div class="viewer-copy">
-          <p class="viewer-kicker">Мобильный просмотр</p>
-          <div class="viewer-chips" id="viewer-chips"></div>
-          <p class="viewer-summary-inline" id="viewer-summary-inline"></p>
-        </div>
         <a class="button button-inline viewer-external" id="viewer-external" href="#" target="_blank" rel="noreferrer">Открыть отдельно</a>
       </header>
 
       <nav class="viewer-nav" aria-label="Навигация по играм">
-        <button class="button button-ghost" type="button" id="viewer-prev">Назад</button>
-        <button class="button button-ghost" type="button" id="viewer-next">Дальше</button>
+        <button class="button button-ghost" type="button" id="viewer-prev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg> Назад</button>
+        <button class="button button-ghost" type="button" id="viewer-next">Дальше <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg></button>
       </nav>
 
       <section class="viewer-info">
         <div class="viewer-details">
+          <div class="viewer-chips" id="viewer-chips"></div>
           <p class="viewer-summary" id="viewer-summary"></p>
           <div class="viewer-highlights" id="viewer-highlights"></div>
         </div>

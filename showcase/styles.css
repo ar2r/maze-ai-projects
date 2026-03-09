@@ -666,7 +666,6 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
 }
 
 .viewer-chip {
@@ -675,6 +674,7 @@ button {
   gap: 0.4rem;
   min-height: 2.25rem;
   padding: 0 0.85rem;
+  border: 4px solid var(--border);
   border-radius: 999px;
   font-family: var(--font-display);
   font-size: 0.8rem;
@@ -708,15 +708,6 @@ button {
   font-size: 0.74rem;
   text-transform: none;
   box-shadow: none;
-  border: 2px solid var(--border);
-}
-
-.viewer-summary-inline {
-  margin: 0;
-  color: var(--ink-soft);
-  font-size: 0.88rem;
-  line-height: 1.45;
-  max-width: 52rem;
 }
 
 .table-badge {
@@ -899,6 +890,10 @@ button {
 .viewer-nav .button,
 .viewer-topbar .button {
   min-height: 2.9rem;
+}
+
+.viewer-nav .button svg {
+  flex: 0 0 auto;
 }
 
 .game-modal-frame-shell,
@@ -1144,8 +1139,7 @@ button {
     width: min(calc(100% - 1rem), 1180px);
   }
 
-  .game-modal-header,
-  .viewer-topbar {
+  .game-modal-header {
     flex-direction: column;
   }
 

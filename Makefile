@@ -1,4 +1,4 @@
-.PHONY: help dev games game site site-preview docker-build docker-run
+.PHONY: help dev showcase games game site site-preview docker-build docker-run
 
 NPM ?= npm
 GAME ?=
@@ -9,6 +9,7 @@ PORT ?= 3000
 help:
 	@echo "Available commands:"
 	@echo "  make dev                           Dev server with live reload at http://127.0.0.1:$(PORT)"
+	@echo "  make showcase                      Dev server for showcase only (no game builds)"
 	@echo "  make games                         List games, optionally run one by number, or press Enter to exit"
 	@echo "  make game                          Select and run a game interactively"
 	@echo "  make game GAME=1                   Run game #1 from the list"
@@ -21,6 +22,9 @@ help:
 
 dev:
 	@PORT=$(PORT) $(NPM) run dev
+
+showcase:
+	@PORT=$(PORT) $(NPM) run dev:showcase
 
 games:
 	@$(NPM) run games -- --prompt-after-list

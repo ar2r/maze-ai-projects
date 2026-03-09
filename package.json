@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node ./scripts/dev-showcase.mjs",
+    "dev:showcase": "node ./scripts/dev-showcase.mjs --no-build",
     "game": "node ./scripts/run-game-dev.mjs",
     "games": "node ./scripts/run-game-dev.mjs --list",
     "site:install": "node ./scripts/install-all.mjs",

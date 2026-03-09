@@ -1,7 +1,6 @@
 const frame = document.querySelector('#viewer-frame');
 const frameShell = document.querySelector('#viewer-frame-shell');
 const chips = document.querySelector('#viewer-chips');
-const summaryInline = document.querySelector('#viewer-summary-inline');
 const summary = document.querySelector('#viewer-summary');
 const highlights = document.querySelector('#viewer-highlights');
 const backLink = document.querySelector('#viewer-back');
@@ -125,7 +124,6 @@ function navigateToGame(slug, replace = false) {
 
   activeSlug = target.slug;
   chips.replaceChildren(...buildViewerChips(target));
-  summaryInline.textContent = target.description || '';
   summary.textContent = target.description || 'Подробности скоро появятся.';
   highlights.replaceChildren(...buildHighlightPills(target.highlights));
   frameShell.dataset.loading = 'true';
@@ -187,7 +185,7 @@ async function init() {
 }
 
 init().catch((error) => {
-  summaryInline.textContent = error.message;
+  summary.textContent = error.message;
   summary.textContent = 'Попробуйте вернуться в каталог и выбрать игру повторно.';
   frame.removeAttribute('src');
   prevButton.disabled = true;

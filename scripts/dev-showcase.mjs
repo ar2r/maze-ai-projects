@@ -235,7 +235,12 @@ async function handleRequest(request, response) {
   sendText(response, 404, 'Not found');
 }
 
-await runInitialBuild();
+await mkdir(path.join(rootDir, 'site-dist'), { recursive: true });
+
+const skipBuild = process.argv.includes('--no-build');
+if (!skipBuild) {
+  await runInitialBuild();
+}
 await loadManifest();
 
 watchFile(manifestPath);
