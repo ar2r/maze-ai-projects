@@ -46,6 +46,14 @@ const PROGRAM_META = {
       </svg>
     `,
   },
+  ollama: {
+    className: 'program-default',
+    icon: `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3a5 5 0 0 0-5 5v1a3 3 0 0 0-1 5.83V17a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4v-2.17A3 3 0 0 0 17 9V8a5 5 0 0 0-5-5Z" />
+      </svg>
+    `,
+  },
   default: {
     className: 'program-default',
     icon: `
@@ -74,6 +82,9 @@ function getProgramKey(program) {
   }
   if (program === 'Kilo') {
     return 'kilo';
+  }
+  if (program === 'Ollama') {
+    return 'ollama';
   }
   return 'default';
 }
@@ -160,6 +171,7 @@ function bindRow(row, game) {
   setBadge(row.querySelector('[data-model]'), game.model, 'table-badge table-badge-model', {
     className: programMeta.className,
   });
+  row.querySelector('[data-description]').textContent = game.description || '';
   row.querySelector('[data-updated-at]').textContent = formatUpdatedAt(game.updatedAt);
 
   const link = row.querySelector('[data-cta]');
@@ -230,5 +242,5 @@ async function init() {
 }
 
 init().catch((error) => {
-  tableBody.innerHTML = `<tr><td colspan="4" class="error-state">Не удалось загрузить каталог игр: ${error.message}</td></tr>`;
+  tableBody.innerHTML = `<tr><td colspan="5" class="error-state">Не удалось загрузить каталог игр: ${error.message}</td></tr>`;
 });

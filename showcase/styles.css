@@ -526,22 +526,27 @@ button {
 
 .games-table th:nth-child(1),
 .games-table td:nth-child(1) {
-  width: 26%;
+  width: 18%;
 }
 
 .games-table th:nth-child(2),
 .games-table td:nth-child(2) {
-  width: 34%;
+  width: 22%;
 }
 
 .games-table th:nth-child(3),
 .games-table td:nth-child(3) {
-  width: 20%;
+  width: 30%;
 }
 
 .games-table th:nth-child(4),
 .games-table td:nth-child(4) {
-  width: 20%;
+  width: 15%;
+}
+
+.games-table th:nth-child(5),
+.games-table td:nth-child(5) {
+  width: 15%;
 }
 
 .game-row:hover td {
@@ -560,6 +565,12 @@ button {
   font-family: var(--font-mono);
   font-size: 0.84rem;
   white-space: nowrap;
+}
+
+.games-table td[data-description] {
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  line-height: 1.35;
 }
 
 .table-badge {
@@ -789,7 +800,7 @@ button {
   }
 
   .games-table {
-    min-width: 690px;
+    min-width: 820px;
   }
 
   .games-table th,
