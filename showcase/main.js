@@ -8,8 +8,8 @@ const statPrograms = document.querySelector('#stat-programs');
 const statModels = document.querySelector('#stat-models');
 const modalRoot = document.querySelector('#game-modal');
 const modalFrame = document.querySelector('#game-modal-frame');
-const modalTitle = document.querySelector('#game-modal-title');
-const modalMeta = document.querySelector('#game-modal-meta');
+const modalChips = document.querySelector('#game-modal-chips');
+const modalSummary = document.querySelector('#game-modal-summary');
 const modalExternal = document.querySelector('#game-modal-external');
 const modalClose = document.querySelector('#game-modal-close');
 const modalPrev = document.querySelector('#game-modal-prev');
@@ -133,6 +133,21 @@ function buildHighlightPills(items) {
     pill.textContent = item;
     return pill;
   });
+}
+
+function buildViewerChips(game) {
+  const programKey = (game.program || '').toLowerCase();
+  const meta = PROGRAM_META[programKey] || PROGRAM_META.default;
+
+  const programChip = document.createElement('span');
+  programChip.className = `viewer-chip ${meta.className}`;
+  programChip.innerHTML = `${meta.icon}<span>${game.program}</span>`;
+
+  const modelChip = document.createElement('span');
+  modelChip.className = 'viewer-chip viewer-chip-model';
+  modelChip.textContent = game.model;
+
+  return [programChip, modelChip];
 }
 
 function getViewerRoute(game) {
@@ -363,8 +378,8 @@ function handleModalKeydown(event) {
 }
 
 function fillModalDetails(game) {
-  modalTitle.textContent = game.title;
-  modalMeta.textContent = `${game.program} · ${game.model}${game.description ? ` · ${game.description}` : ''}`;
+  modalChips.replaceChildren(...buildViewerChips(game));
+  modalSummary.textContent = game.summary || game.tagline || '';
   modalExternal.href = game.route;
 }
 
