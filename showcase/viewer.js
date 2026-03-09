@@ -1,4 +1,5 @@
 const frame = document.querySelector('#viewer-frame');
+const frameShell = document.querySelector('#viewer-frame-shell');
 const chips = document.querySelector('#viewer-chips');
 const summaryInline = document.querySelector('#viewer-summary-inline');
 const summary = document.querySelector('#viewer-summary');
@@ -40,8 +41,18 @@ const PROGRAM_META = {
   },
 };
 
+function getProgramKey(program) {
+  if (program === 'Claude') return 'claude';
+  if (program === 'Codex') return 'codex';
+  if (program === 'GitHub Copilot') return 'copilot';
+  if (program === 'Gemini') return 'gemini';
+  if (program === 'Kilo') return 'kilo';
+  if (program === 'Ollama') return 'ollama';
+  return 'default';
+}
+
 function buildViewerChips(game) {
-  const programKey = (game.program || '').toLowerCase();
+  const programKey = getProgramKey(game.program);
   const meta = PROGRAM_META[programKey] || PROGRAM_META.default;
 
   const programChip = document.createElement('span');
@@ -117,6 +128,7 @@ function navigateToGame(slug, replace = false) {
   summaryInline.textContent = target.description || '';
   summary.textContent = target.description || 'Подробности скоро появятся.';
   highlights.replaceChildren(...buildHighlightPills(target.highlights));
+  frameShell.dataset.loading = 'true';
   frame.src = target.route;
   frame.title = `Просмотр игры ${target.title}`;
   externalLink.href = target.route;
@@ -138,6 +150,10 @@ function navigateToGame(slug, replace = false) {
 }
 
 async function init() {
+  frame.addEventListener('load', () => {
+    delete frameShell.dataset.loading;
+  });
+
   const response = await fetch('./games.manifest.json');
   games = await response.json();
 

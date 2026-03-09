@@ -11,6 +11,8 @@ const modalFrame = document.querySelector('#game-modal-frame');
 const modalChips = document.querySelector('#game-modal-chips');
 const modalSummary = document.querySelector('#game-modal-summary');
 const modalExternal = document.querySelector('#game-modal-external');
+const modalHighlights = document.querySelector('#game-modal-highlights');
+const modalFrameShell = document.querySelector('#game-modal-frame-shell');
 const modalClose = document.querySelector('#game-modal-close');
 const modalPrev = document.querySelector('#game-modal-prev');
 const modalNext = document.querySelector('#game-modal-next');
@@ -307,6 +309,19 @@ function bindCard(card, game) {
 function renderGames() {
   const orderedGames = getVisibleGames();
 
+  if (orderedGames.length === 0) {
+    const emptyRow = document.createElement('tr');
+    emptyRow.innerHTML = '<td colspan="5" class="empty-state">Нет игр для выбранной программы</td>';
+    tableBody.replaceChildren(emptyRow);
+
+    const emptyCard = document.createElement('p');
+    emptyCard.className = 'empty-state';
+    emptyCard.textContent = 'Нет игр для выбранной программы';
+    cardList.replaceChildren(emptyCard);
+
+    return;
+  }
+
   tableBody.replaceChildren(
     ...orderedGames.map((game) => {
       const fragment = tableTemplate.content.cloneNode(true);
@@ -387,6 +402,7 @@ function handleModalKeydown(event) {
 function fillModalDetails(game) {
   modalChips.replaceChildren(...buildViewerChips(game));
   modalSummary.textContent = game.description || '';
+  modalHighlights.replaceChildren(...buildHighlightPills(game.highlights));
   modalExternal.href = game.route;
 }
 
@@ -404,6 +420,7 @@ function openModal(slug, options = {}) {
 
   activeGameSlug = game.slug;
   fillModalDetails(game);
+  modalFrameShell.dataset.loading = 'true';
   modalFrame.src = game.route;
   modalFrame.title = `Просмотр игры ${game.title}`;
   modalRoot.hidden = false;
@@ -428,6 +445,7 @@ function closeModal(options = {}) {
 
   modalRoot.hidden = true;
   modalFrame.src = 'about:blank';
+  delete modalFrameShell.dataset.loading;
   document.body.classList.remove('has-modal-open');
   activeGameSlug = null;
 
@@ -466,6 +484,9 @@ function applyUrlState() {
 }
 
 function registerGlobalEvents() {
+  modalFrame.addEventListener('load', () => {
+    delete modalFrameShell.dataset.loading;
+  });
   modalClose.addEventListener('click', () => closeModal());
   modalRoot.addEventListener('click', (event) => {
     if (event.target instanceof HTMLElement && event.target.hasAttribute('data-modal-close')) {
