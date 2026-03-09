@@ -114,8 +114,8 @@ function navigateToGame(slug, replace = false) {
 
   activeSlug = target.slug;
   chips.replaceChildren(...buildViewerChips(target));
-  summaryInline.textContent = target.summary || target.tagline || '';
-  summary.textContent = target.summary || target.tagline || 'Подробности скоро появятся.';
+  summaryInline.textContent = target.description || '';
+  summary.textContent = target.description || 'Подробности скоро появятся.';
   highlights.replaceChildren(...buildHighlightPills(target.highlights));
   frame.src = target.route;
   frame.title = `Просмотр игры ${target.title}`;

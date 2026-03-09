@@ -140,12 +140,19 @@ function buildViewerChips(game) {
   const meta = PROGRAM_META[programKey] || PROGRAM_META.default;
 
   const programChip = document.createElement('span');
-  programChip.className = `viewer-chip ${meta.className}`;
-  programChip.innerHTML = `${meta.icon}<span>${game.program}</span>`;
+  programChip.className = `table-badge table-badge-program ${meta.className}`.trim();
+  const programIcon = document.createElement('span');
+  programIcon.className = 'badge-icon';
+  programIcon.innerHTML = meta.icon;
+  const programLabel = document.createElement('span');
+  programLabel.textContent = game.program;
+  programChip.append(programIcon, programLabel);
 
   const modelChip = document.createElement('span');
-  modelChip.className = 'viewer-chip viewer-chip-model';
-  modelChip.textContent = game.model;
+  modelChip.className = `table-badge table-badge-model ${meta.className}`.trim();
+  const modelLabel = document.createElement('span');
+  modelLabel.textContent = game.model;
+  modelChip.append(modelLabel);
 
   return [programChip, modelChip];
 }
@@ -379,7 +386,7 @@ function handleModalKeydown(event) {
 
 function fillModalDetails(game) {
   modalChips.replaceChildren(...buildViewerChips(game));
-  modalSummary.textContent = game.summary || game.tagline || '';
+  modalSummary.textContent = game.description || '';
   modalExternal.href = game.route;
 }
 
