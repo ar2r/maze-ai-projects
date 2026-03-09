@@ -10,7 +10,6 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Audio + vibration", "HiDPI canvas", "Debug overlay"],
     "accent": "#fdba74",
-    "screenshot": "claude-sonnet-4.5/assets/screenshot-game.svg",
     "updatedAt": "2026-02-15T15:56:44+03:00"
   },
   {
@@ -24,7 +23,6 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Seed URL support", "Pause + results", "Mobile controls"],
     "accent": "#fb7185",
-    "screenshot": "codex-gpt-5.1-codex-max-xhigh/docs/screenshots/ingame.svg",
     "updatedAt": "2026-02-15T15:56:44+03:00"
   },
   {
@@ -38,7 +36,6 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Debug mode", "Responsive layout", "Progressive difficulty"],
     "accent": "#38bdf8",
-    "screenshot": "codex-gpt-5.2-codex-xhigh/assets/screenshots/gameplay.svg",
     "updatedAt": "2026-02-15T15:56:44+03:00"
   },
   {
@@ -52,7 +49,6 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Structured engine", "Settings flow", "Seeded mazes"],
     "accent": "#818cf8",
-    "screenshot": "codex-gpt-5.3-codex-xhigh/docs/screenshots/gameplay.png",
     "updatedAt": "2026-02-15T15:56:44+03:00"
   },
   {

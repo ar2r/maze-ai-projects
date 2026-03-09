@@ -3,8 +3,6 @@ const title = document.querySelector('#viewer-title');
 const meta = document.querySelector('#viewer-meta');
 const summary = document.querySelector('#viewer-summary');
 const highlights = document.querySelector('#viewer-highlights');
-const preview = document.querySelector('#viewer-preview');
-const previewFallback = document.querySelector('#viewer-preview-fallback');
 const backLink = document.querySelector('#viewer-back');
 const externalLink = document.querySelector('#viewer-external');
 const prevButton = document.querySelector('#viewer-prev');
@@ -50,20 +48,6 @@ function buildHighlightPills(items) {
   });
 }
 
-function setPreview(game) {
-  if (game.screenshot) {
-    preview.src = game.screenshot;
-    preview.alt = `Превью игры ${game.title}`;
-    preview.hidden = false;
-    previewFallback.hidden = true;
-    return;
-  }
-
-  preview.hidden = true;
-  preview.removeAttribute('src');
-  previewFallback.hidden = false;
-}
-
 function updateNav() {
   const visibleGames = getVisibleGames();
   const index = visibleGames.findIndex((game) => game.slug === activeSlug);
@@ -87,7 +71,6 @@ function navigateToGame(slug, replace = false) {
   meta.textContent = `${target.program} · ${target.model}${target.description ? ` · ${target.description}` : ''}`;
   summary.textContent = target.summary || target.tagline || 'Подробности скоро появятся.';
   highlights.replaceChildren(...buildHighlightPills(target.highlights));
-  setPreview(target);
   frame.src = target.route;
   frame.title = `Просмотр игры ${target.title}`;
   externalLink.href = target.route;
