@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { createHash } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { cp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -74,6 +75,26 @@ async function copyShowcase() {
   });
 }
 
+function contentHash(buffer) {
+  return createHash('sha256').update(buffer).digest('hex').slice(0, 10);
+}
+
+async function fingerprintShowcaseAssets() {
+  const indexPath = path.join(outputDir, 'index.html');
+  let html = await readFile(indexPath, 'utf8');
+
+  for (const filename of ['main.js', 'styles.css']) {
+    const filePath = path.join(outputDir, filename);
+    if (!(await pathExists(filePath))) {
+      continue;
+    }
+    const hash = contentHash(await readFile(filePath));
+    html = html.replaceAll(`./${filename}`, `./${filename}?v=${hash}`);
+  }
+
+  await writeFile(indexPath, html, 'utf8');
+}
+
 async function copyScreenshot(game) {
   if (!game.screenshot) {
     return null;
@@ -98,6 +119,7 @@ await mkdir(screenshotOutputDir, { recursive: true });
 await mkdir(gamesOutputDir, { recursive: true });
 
 await copyShowcase();
+await fingerprintShowcaseAssets();
 
 const runtimeManifest = [];
 
