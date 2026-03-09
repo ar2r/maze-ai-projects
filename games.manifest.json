@@ -62,7 +62,6 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Deterministic DFS", "Layered renderer", "Local progress"],
     "accent": "#22d3ee",
-    "screenshot": null,
     "updatedAt": "2026-03-07T14:45:32+03:00"
   },
   {
@@ -76,7 +75,6 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Infinite levels", "Offline-friendly", "Simple physics"],
     "accent": "#34d399",
-    "screenshot": null,
     "updatedAt": "2026-02-15T18:00:09+03:00"
   },
   {
@@ -90,7 +88,6 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Seeded runs", "Virtual joystick", "Anti-tunneling"],
     "accent": "#f59e0b",
-    "screenshot": "copilot-gpt-5.3-codex/public/screenshots/gameplay.svg",
     "updatedAt": "2026-02-15T15:56:44+03:00"
   },
   {
@@ -104,7 +101,6 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Procedural sound", "HiDPI support", "Joystick mode"],
     "accent": "#f97316",
-    "screenshot": null,
     "updatedAt": "2026-03-07T14:45:50+03:00"
   },
   {
@@ -118,7 +114,6 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Node tests"],
     "highlights": ["Full menu flow", "Persistence", "QA docs"],
     "accent": "#a78bfa",
-    "screenshot": null,
     "updatedAt": "2026-02-15T20:38:52+03:00"
   },
   {
@@ -132,7 +127,6 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["No runtime deps", "Touch support", "F3 debug"],
     "accent": "#60a5fa",
-    "screenshot": "copilot-opus-4.5/screenshots/gameplay.svg",
     "updatedAt": "2026-02-15T15:56:46+03:00"
   },
   {
@@ -146,7 +140,6 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Audio settings", "Vibration", "Detailed QA"],
     "accent": "#2dd4bf",
-    "screenshot": "copilot-opus-4.6/screenshots/04-gameplay-level10.svg",
     "updatedAt": "2026-02-15T15:56:47+03:00"
   },
   {
@@ -160,7 +153,6 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["TDD methodology", "63 unit tests", "Chiptune audio"],
     "accent": "#e94560",
-    "screenshot": null,
     "updatedAt": "2026-03-09T14:01:00+03:00"
   },
   {
@@ -174,7 +166,6 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["TDD methodology", "55 unit tests", "Offscreen rendering"],
     "accent": "#e94560",
-    "screenshot": null,
     "updatedAt": "2026-03-09T12:12:23+03:00"
   },
   {
@@ -188,7 +179,6 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Dark theme", "Settings screen", "Cross-platform controls"],
     "accent": "#c084fc",
-    "screenshot": null,
     "updatedAt": "2026-02-15T16:01:31+03:00"
   },
   {
@@ -202,7 +192,6 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Pacman avatar", "Retro fantasy UI", "Offscreen canvas"],
     "accent": "#f472b6",
-    "screenshot": null,
     "updatedAt": "2026-02-15T17:39:20+03:00"
   },
   {
@@ -216,7 +205,6 @@
     "stack": ["TypeScript", "Vite", "Canvas"],
     "highlights": ["Touch joystick", "Local progress", "Infinite levels"],
     "accent": "#f43f5e",
-    "screenshot": null,
     "updatedAt": "2026-03-07T19:19:14+03:00"
   },
   {
@@ -230,7 +218,6 @@
     "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
     "highlights": ["Settings UI", "Vibration feedback", "20 levels"],
     "accent": "#10b981",
-    "screenshot": null,
     "updatedAt": "2026-03-07T21:20:00+03:00"
   },
   {
@@ -244,7 +231,6 @@
     "stack": ["TypeScript", "Vite", "Canvas"],
     "highlights": ["Touch controls", "Progressive difficulty", "Local progress"],
     "accent": "#6366f1",
-    "screenshot": null,
     "updatedAt": "2026-03-08T19:30:00+03:00"
   }
 ]
