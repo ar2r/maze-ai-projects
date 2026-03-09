@@ -143,6 +143,19 @@
     "updatedAt": "2026-02-15T15:56:47+03:00"
   },
   {
+    "slug": "copilot-sonnet-4.6-TDD",
+    "title": "Maze Runner",
+    "program": "GitHub Copilot",
+    "model": "Sonnet 4.6",
+    "tagline": "TDD-driven maze engine with 55 unit tests and clean modular architecture.",
+    "summary": "A strict test-driven implementation featuring deterministic PRNG, circle-segment collision, and offscreen canvas rendering.",
+    "stack": ["TypeScript", "Vite", "Canvas", "Vitest"],
+    "highlights": ["TDD methodology", "55 unit tests", "Offscreen rendering"],
+    "accent": "#e94560",
+    "screenshot": null,
+    "updatedAt": "2026-03-09T12:12:23+03:00"
+  },
+  {
     "slug": "copilot-sonnet-4.5",
     "title": "Maze Game",
     "program": "GitHub Copilot",

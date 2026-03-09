@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#1a1a2e" />
+  <title>Maze Runner</title>
+  <style>
+    /* ═══════════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --clr-bg: #1a1a2e;
+      --clr-surface: #16213e;
+      --clr-primary: #0f3460;
+      --clr-accent: #e94560;
+      --clr-accent2: #f5a623;
+      --clr-text: #eaeaea;
+      --clr-text-dim: #8892a4;
+      --clr-wall: #2d4a6e;
+      --clr-path: #0d1b2a;
+      --clr-start: #27ae60;
+      --clr-finish: #e74c3c;
+      --clr-player: #f39c12;
+      --radius: 12px;
+      --btn-h: 52px;
+      font-size: 16px;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--clr-bg);
+      color: var(--clr-text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      overflow: hidden;
+      touch-action: none; /* prevent global scroll on touch */
+      -webkit-user-select: none; user-select: none;
+    }
+
+    /* ═══════════════════════════════════════════════
+       LAYOUT WRAPPER
+    ═══════════════════════════════════════════════ */
+    #app {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+
+    /* ═══════════════════════════════════════════════
+       CANVAS
+    ═══════════════════════════════════════════════ */
+    #game-canvas {
+      display: block;
+      touch-action: none;
+      image-rendering: pixelated;
+      border-radius: var(--radius);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    }
+
+    /* ═══════════════════════════════════════════════
+       SCREENS (menu, results, settings)
+    ═══════════════════════════════════════════════ */
+    .screen {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 16px;
+      padding: 24px;
+      background: rgba(26, 26, 46, 0.96);
+      backdrop-filter: blur(4px);
+      z-index: 10;
+    }
+    .screen.hidden { display: none; }
+
+    .screen h1 {
+      font-size: clamp(2rem, 8vw, 3.5rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: var(--clr-accent);
+      text-shadow: 0 0 24px rgba(233,69,96,0.4);
+      margin-bottom: 8px;
+    }
+    .screen h2 {
+      font-size: clamp(1.2rem, 4vw, 1.8rem);
+      font-weight: 700;
+      color: var(--clr-accent2);
+      margin-bottom: 4px;
+    }
+
+    /* ═══════════════════════════════════════════════
+       BUTTONS
+    ═══════════════════════════════════════════════ */
+    .btn {
+      min-width: 200px;
+      min-height: var(--btn-h);
+      padding: 0 28px;
+      border: 2px solid transparent;
+      border-radius: var(--radius);
+      background: var(--clr-primary);
+      color: var(--clr-text);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: transform 0.1s, background 0.15s, border-color 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn:hover, .btn:focus-visible {
+      background: var(--clr-accent);
+      border-color: var(--clr-accent2);
+      outline: none;
+      transform: scale(1.03);
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+    .btn.secondary { background: var(--clr-surface); border-color: var(--clr-wall); }
+    .btn.danger { background: #7b1010; }
+
+    /* ═══════════════════════════════════════════════
+       HUD
+    ═══════════════════════════════════════════════ */
+    #hud {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 16px;
+      background: rgba(22,33,62,0.85);
+      backdrop-filter: blur(4px);
+      z-index: 5;
+      pointer-events: none;
+    }
+    #hud.hidden { display: none; }
+    #hud .hud-item {
+      display: flex; flex-direction: column; align-items: center;
+      line-height: 1.2;
+    }
+    #hud .hud-label { font-size: 0.65rem; color: var(--clr-text-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+    #hud .hud-value { font-size: 1rem; font-weight: 700; color: var(--clr-text); }
+    #hud #btn-pause {
+      pointer-events: all;
+      background: none; border: 2px solid var(--clr-wall);
+      color: var(--clr-text); border-radius: 8px;
+      width: 40px; height: 40px;
+      font-size: 1.1rem; cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s;
+    }
+    #hud #btn-pause:hover, #hud #btn-pause:focus-visible { background: var(--clr-primary); outline: none; }
+
+    /* ═══════════════════════════════════════════════
+       RESULTS SCREEN extras
+    ═══════════════════════════════════════════════ */
+    .results-stats {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px; width: 100%; max-width: 360px;
+      margin: 8px 0;
+    }
+    .stat-card {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-wall);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      text-align: center;
+    }
+    .stat-card .s-label { font-size: 0.7rem; color: var(--clr-text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+    .stat-card .s-value { font-size: 1.4rem; font-weight: 800; color: var(--clr-accent2); }
+    .stat-card .s-best { font-size: 0.7rem; color: var(--clr-start); }
+
+    .new-best-badge {
+      background: var(--clr-accent);
+      color: #fff; font-size: 0.75rem; font-weight: 800;
+      padding: 4px 12px; border-radius: 20px;
+      display: none; letter-spacing: 0.08em;
+    }
+    .new-best-badge.visible { display: block; }
+
+    /* ═══════════════════════════════════════════════
+       SETTINGS SCREEN
+    ═══════════════════════════════════════════════ */
+    .settings-group {
+      width: 100%; max-width: 360px;
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-wall);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .setting-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--clr-wall);
+    }
+    .setting-row:last-child { border-bottom: none; }
+    .setting-row label { font-size: 0.95rem; color: var(--clr-text); }
+    .setting-row .hint { font-size: 0.7rem; color: var(--clr-text-dim); }
+
+    /* Toggle switch */
+    .toggle {
+      position: relative; width: 48px; height: 26px; flex-shrink: 0;
+    }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute; inset: 0;
+      background: var(--clr-wall); border-radius: 13px;
+      transition: background 0.2s; cursor: pointer;
+    }
+    .toggle-slider::before {
+      content: ''; position: absolute;
+      width: 20px; height: 20px; left: 3px; top: 3px;
+      background: white; border-radius: 50%;
+      transition: transform 0.2s;
+    }
+    .toggle input:checked + .toggle-slider { background: var(--clr-accent); }
+    .toggle input:checked + .toggle-slider::before { transform: translateX(22px); }
+
+    /* Segmented control */
+    .seg-control {
+      display: flex; border: 2px solid var(--clr-wall); border-radius: 8px; overflow: hidden;
+    }
+    .seg-control button {
+      flex: 1; padding: 6px 12px; border: none; background: none;
+      color: var(--clr-text-dim); font-size: 0.8rem; font-weight: 600; cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .seg-control button.active { background: var(--clr-accent); color: #fff; }
+
+    /* ═══════════════════════════════════════════════
+       DEBUG OVERLAY
+    ═══════════════════════════════════════════════ */
+    #debug-overlay {
+      position: absolute; top: 60px; right: 8px;
+      background: rgba(0,0,0,0.8);
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.7rem; color: #0f0;
+      line-height: 1.6; pointer-events: none; z-index: 20;
+      white-space: pre;
+    }
+    #debug-overlay.hidden { display: none; }
+
+    /* ═══════════════════════════════════════════════
+       CONTROL HINT (mobile)
+    ═══════════════════════════════════════════════ */
+    #control-hint {
+      position: absolute; bottom: 20px; right: 16px;
+      font-size: 0.7rem; color: var(--clr-text-dim);
+      text-align: right; pointer-events: none; z-index: 5;
+    }
+    #control-hint.hidden { display: none; }
+
+    /* ═══════════════════════════════════════════════
+       JOYSTICK
+    ═══════════════════════════════════════════════ */
+    #joystick-container {
+      position: absolute; bottom: 24px; left: 24px;
+      pointer-events: all; z-index: 6;
+      opacity: 0.7;
+      display: none; /* shown only on touch */
+    }
+    #joystick-container.visible { display: block; }
+    #joystick-base {
+      width: 100px; height: 100px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 2px solid rgba(255,255,255,0.2);
+      position: relative;
+    }
+    #joystick-knob {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(233,69,96,0.7);
+      border: 2px solid rgba(255,255,255,0.4);
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      transition: none;
+    }
+
+    /* ═══════════════════════════════════════════════
+       MENU LOGO DECORATION
+    ═══════════════════════════════════════════════ */
+    .logo-maze {
+      width: 80px; height: 80px;
+      background: var(--clr-surface);
+      border: 3px solid var(--clr-accent);
+      border-radius: var(--radius);
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 3px; padding: 8px; margin-bottom: 8px;
+    }
+    .logo-cell {
+      background: var(--clr-wall);
+      border-radius: 2px;
+    }
+    .logo-cell.open { background: transparent; }
+
+    /* ═══════════════════════════════════════════════
+       MOBILE RESPONSIVE
+    ═══════════════════════════════════════════════ */
+    @media (max-width: 480px) {
+      :root { --btn-h: 56px; }
+      .btn { min-width: 160px; font-size: 0.95rem; }
+      .results-stats { grid-template-columns: 1fr 1fr; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- Main game canvas -->
+    <canvas id="game-canvas"></canvas>
+
+    <!-- HUD (in-game top bar) -->
+    <div id="hud" class="hidden">
+      <div class="hud-item">
+        <span class="hud-label">Level</span>
+        <span class="hud-value" id="hud-level">1</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">Time</span>
+        <span class="hud-value" id="hud-time">00:00</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">Hits</span>
+        <span class="hud-value" id="hud-hits">0</span>
+      </div>
+      <button id="btn-pause" aria-label="Pause">⏸</button>
+    </div>
+
+    <!-- MENU SCREEN -->
+    <div id="screen-menu" class="screen">
+      <div class="logo-maze" aria-hidden="true">
+        <div class="logo-cell"></div><div class="logo-cell open"></div><div class="logo-cell"></div><div class="logo-cell"></div>
+        <div class="logo-cell open"></div><div class="logo-cell open"></div><div class="logo-cell open"></div><div class="logo-cell"></div>
+        <div class="logo-cell"></div><div class="logo-cell open"></div><div class="logo-cell"></div><div class="logo-cell open"></div>
+        <div class="logo-cell"></div><div class="logo-cell"></div><div class="logo-cell open"></div><div class="logo-cell open"></div>
+      </div>
+      <h1>Maze Runner</h1>
+      <p style="color:var(--clr-text-dim);font-size:0.9rem;text-align:center;max-width:280px">Navigate through procedurally generated mazes. Each level harder than the last.</p>
+      <button class="btn" id="btn-start">▶ New Game</button>
+      <button class="btn secondary" id="btn-continue">⟳ Continue</button>
+      <button class="btn secondary" id="btn-settings-open">⚙ Settings</button>
+    </div>
+
+    <!-- PAUSE SCREEN -->
+    <div id="screen-pause" class="screen hidden">
+      <h2>Paused</h2>
+      <button class="btn" id="btn-resume">▶ Resume</button>
+      <button class="btn secondary" id="btn-restart">↺ Restart Level</button>
+      <button class="btn secondary" id="btn-menu-from-pause">⌂ Menu</button>
+    </div>
+
+    <!-- RESULTS SCREEN -->
+    <div id="screen-results" class="screen hidden">
+      <h2>Level Complete!</h2>
+      <div class="new-best-badge" id="new-best-badge">⭐ NEW BEST TIME!</div>
+      <div class="results-stats">
+        <div class="stat-card">
+          <div class="s-label">Time</div>
+          <div class="s-value" id="res-time">00:00</div>
+          <div class="s-best" id="res-best"></div>
+        </div>
+        <div class="stat-card">
+          <div class="s-label">Wall Hits</div>
+          <div class="s-value" id="res-hits">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="s-label">Level</div>
+          <div class="s-value" id="res-level">1</div>
+        </div>
+        <div class="stat-card">
+          <div class="s-label">Path Ratio</div>
+          <div class="s-value" id="res-ratio">—</div>
+        </div>
+      </div>
+      <button class="btn" id="btn-next-level">Next Level →</button>
+      <button class="btn secondary" id="btn-retry">↺ Retry</button>
+      <button class="btn secondary" id="btn-menu-from-results">⌂ Menu</button>
+    </div>
+
+    <!-- SETTINGS SCREEN -->
+    <div id="screen-settings" class="screen hidden">
+      <h2>Settings</h2>
+      <div class="settings-group">
+        <div class="setting-row">
+          <div>
+            <div class="setting-label">Sound Effects</div>
+            <div class="hint">Wall hits &amp; level complete</div>
+          </div>
+          <label class="toggle" aria-label="Toggle sound">
+            <input type="checkbox" id="setting-sound" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="setting-row" id="row-vibration">
+          <div>
+            <div class="setting-label">Vibration</div>
+            <div class="hint">Haptic feedback on collision</div>
+          </div>
+          <label class="toggle" aria-label="Toggle vibration">
+            <input type="checkbox" id="setting-vibration" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="setting-row">
+          <div>
+            <div class="setting-label">Controls</div>
+            <div class="hint">Desktop input mode</div>
+          </div>
+          <div class="seg-control" id="ctrl-mode">
+            <button data-mode="mouse" class="active">Mouse</button>
+            <button data-mode="keyboard">Keys</button>
+          </div>
+        </div>
+      </div>
+      <button class="btn secondary" id="btn-settings-close">✓ Done</button>
+    </div>
+
+    <!-- JOYSTICK -->
+    <div id="joystick-container" aria-hidden="true">
+      <div id="joystick-base">
+        <div id="joystick-knob"></div>
+      </div>
+    </div>
+
+    <!-- CONTROL HINT -->
+    <div id="control-hint" class="hidden"></div>
+
+    <!-- DEBUG OVERLAY -->
+    <div id="debug-overlay" class="hidden"></div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
