@@ -2,7 +2,7 @@
 
 **Демо:** https://maze-ai.dev.hasanov.ru/
 
-Единая AI-витрина для 13 игр-лабиринтов, собранных разными программами и моделями.  
+Единая AI-витрина для 18 игр-лабиринтов, собранных разными программами и моделями.  
 Одна страница показывает, чем отличается каждая сборка: `программа`, `модель`, `обновлено`, `запуск`.
 
 ## Что это
@@ -12,6 +12,8 @@
 - `Codex`
 - `GitHub Copilot`
 - `Gemini`
+- `Kilo`
+- `Ollama`
 
 Поверх них сделан общий web-интерфейс в папке `showcase/`.
 Он открывает все игры из одного места и позволяет быстро сравнивать результаты разных AI-инструментов.
@@ -104,18 +106,28 @@ F) Производительность:
 
 ## Быстрый запуск
 
-Для локальной разработки витрины:
+Для локальной разработки витрины (с полной сборкой всех игр):
 
 ```bash
 npm run dev
+# или
+make dev
 ```
 
 UI откроется на `http://127.0.0.1:3000`.
 
+Для разработки только витрины без пересборки игр (быстрее):
+
+```bash
+make showcase
+# или
+npm run dev:showcase
+```
+
 Если порт занят:
 
 ```bash
-PORT=3001 npm run dev
+PORT=3001 make dev
 ```
 
 ## Production-сборка
@@ -124,12 +136,16 @@ PORT=3001 npm run dev
 
 ```bash
 npm run site:build
+# или
+make site
 ```
 
 Локально посмотреть готовую сборку:
 
 ```bash
 npm run site:preview
+# или
+make site-preview
 ```
 
 ## Docker
@@ -142,6 +158,20 @@ make docker-run
 ```
 
 По умолчанию контейнер поднимается на `http://127.0.0.1:3000`.
+
+## Make-команды
+
+| Команда | Описание |
+| --- | --- |
+| `make dev` | Dev-сервер с live-reload (собирает все игры) |
+| `make showcase` | Dev-сервер только для витрины (без сборки игр) |
+| `make games` | Список игр, интерактивный запуск |
+| `make game GAME=1` | Запустить игру по номеру |
+| `make game GAME=copilot-gemini-3` | Запустить игру по имени папки |
+| `make site` | Собрать единый сайт в `site-dist/` |
+| `make site-preview` | Поднять готовую сборку локально |
+| `make docker-build` | Собрать Docker-образ |
+| `make docker-run` | Запустить Docker-контейнер на порту 3000 |
 
 ## CI/CD
 
@@ -173,14 +203,22 @@ Workflow лежит в [.github/workflows/ci.yml](/Users/artur/AiTesting/maze-ai
 | `copilot-haiku-4.5` | GitHub Copilot | Haiku 4.5 |
 | `copilot-opus-4.5` | GitHub Copilot | Opus 4.5 |
 | `copilot-opus-4.6` | GitHub Copilot | Opus 4.6 |
+| `copilot-opus-4.6-TDD` | GitHub Copilot | Opus 4.6 (TDD) |
 | `copilot-sonnet-4.5` | GitHub Copilot | Sonnet 4.5 |
+| `copilot-sonnet-4.6-TDD` | GitHub Copilot | Sonnet 4.6 (TDD) |
 | `gemini-gemini-3.1-pro-preview` | Gemini | Gemini 3 |
+| `kilo-minimax-m2.5` | Kilo | MiniMax M2.5 |
+| `ollama-glm-5` | Ollama | GLM-5 |
+| `ollama-kimi-k2.5` | Ollama | Kimi K2.5 |
 
 ## Полезные файлы
 
 - [showcase/index.html](/Users/artur/AiTesting/maze-ai-projects/showcase/index.html)
+- [showcase/play.html](/Users/artur/AiTesting/maze-ai-projects/showcase/play.html)
 - [showcase/main.js](/Users/artur/AiTesting/maze-ai-projects/showcase/main.js)
+- [showcase/viewer.js](/Users/artur/AiTesting/maze-ai-projects/showcase/viewer.js)
 - [showcase/styles.css](/Users/artur/AiTesting/maze-ai-projects/showcase/styles.css)
 - [games.manifest.json](/Users/artur/AiTesting/maze-ai-projects/games.manifest.json)
 - [package.json](/Users/artur/AiTesting/maze-ai-projects/package.json)
+- [Makefile](/Users/artur/AiTesting/maze-ai-projects/Makefile)
 - [Dockerfile](/Users/artur/AiTesting/maze-ai-projects/Dockerfile)
