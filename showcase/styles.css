@@ -30,6 +30,7 @@
 
 html {
   scroll-behavior: smooth;
+  overscroll-behavior: none;
 }
 
 body {
@@ -67,7 +68,7 @@ button {
 }
 
 .ambient {
-  position: fixed;
+  position: absolute;
   pointer-events: none;
   border-radius: 999px;
   filter: blur(18px);
