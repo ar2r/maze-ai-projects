@@ -14,10 +14,6 @@ const modalExternal = document.querySelector('#game-modal-external');
 const modalClose = document.querySelector('#game-modal-close');
 const modalPrev = document.querySelector('#game-modal-prev');
 const modalNext = document.querySelector('#game-modal-next');
-const modalPreview = document.querySelector('#game-modal-preview');
-const modalPreviewFallback = document.querySelector('#game-modal-preview-fallback');
-const modalSummary = document.querySelector('#game-modal-summary');
-const modalHighlights = document.querySelector('#game-modal-highlights');
 const DESKTOP_MEDIA = '(min-width: 900px)';
 const ALL_PROGRAMS_LABEL = 'Все';
 const PROGRAM_META = {
@@ -137,20 +133,6 @@ function buildHighlightPills(items) {
     pill.textContent = item;
     return pill;
   });
-}
-
-function setGamePreview(image, fallback, game) {
-  if (game.screenshot) {
-    image.src = game.screenshot;
-    image.alt = `Превью игры ${game.title}`;
-    image.hidden = false;
-    fallback.hidden = true;
-    return;
-  }
-
-  image.hidden = true;
-  image.removeAttribute('src');
-  fallback.hidden = false;
 }
 
 function getViewerRoute(game) {
@@ -383,10 +365,7 @@ function handleModalKeydown(event) {
 function fillModalDetails(game) {
   modalTitle.textContent = game.title;
   modalMeta.textContent = `${game.program} · ${game.model}${game.description ? ` · ${game.description}` : ''}`;
-  modalSummary.textContent = game.summary || game.tagline || 'Подробности скоро появятся.';
-  modalHighlights.replaceChildren(...buildHighlightPills(game.highlights));
   modalExternal.href = game.route;
-  setGamePreview(modalPreview, modalPreviewFallback, game);
 }
 
 function openModal(slug, options = {}) {

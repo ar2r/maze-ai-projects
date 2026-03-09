@@ -624,7 +624,6 @@ button {
 }
 
 .game-card-description,
-.game-modal-summary,
 .viewer-summary {
   margin: 0;
   color: var(--ink-soft);
@@ -632,7 +631,6 @@ button {
 }
 
 .game-card-highlights,
-.game-modal-highlights,
 .viewer-highlights {
   display: flex;
   flex-wrap: wrap;
@@ -765,19 +763,17 @@ button {
 
 .game-modal-body {
   display: grid;
-  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+  grid-template-columns: 1fr;
   gap: 1rem;
   min-height: 0;
 }
 
-.game-modal-sidebar,
 .viewer-details {
   display: grid;
   gap: 0.85rem;
   align-content: start;
 }
 
-.game-modal-preview-shell,
 .viewer-preview-shell {
   position: relative;
   min-height: 180px;
@@ -787,7 +783,6 @@ button {
   background: linear-gradient(135deg, #fff6dc, #ffd2b8);
 }
 
-.game-modal-preview,
 .viewer-preview {
   display: block;
   width: 100%;
@@ -795,7 +790,6 @@ button {
   object-fit: cover;
 }
 
-.game-modal-preview-fallback,
 .viewer-preview-fallback {
   display: grid;
   place-items: center;
@@ -851,9 +845,11 @@ button {
 .game-modal-actions,
 .viewer-nav {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
   gap: 0.7rem;
   justify-content: flex-end;
+  align-items: flex-start;
 }
 
 .game-modal-actions .button,
@@ -1065,7 +1061,6 @@ button {
     justify-content: flex-start;
   }
 
-  .game-modal-body,
   .viewer-info {
     grid-template-columns: 1fr;
   }
