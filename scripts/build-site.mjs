@@ -80,19 +80,30 @@ function contentHash(buffer) {
 }
 
 async function fingerprintShowcaseAssets() {
-  const indexPath = path.join(outputDir, 'index.html');
-  let html = await readFile(indexPath, 'utf8');
+  const htmlFiles = ['index.html', 'play.html'];
+  const assetFiles = ['main.js', 'viewer.js', 'styles.css'];
+  const assetHashes = new Map();
 
-  for (const filename of ['main.js', 'styles.css']) {
+  for (const filename of assetFiles) {
     const filePath = path.join(outputDir, filename);
     if (!(await pathExists(filePath))) {
       continue;
     }
-    const hash = contentHash(await readFile(filePath));
-    html = html.replaceAll(`./${filename}`, `./${filename}?v=${hash}`);
+    assetHashes.set(filename, contentHash(await readFile(filePath)));
   }
 
-  await writeFile(indexPath, html, 'utf8');
+  for (const htmlFile of htmlFiles) {
+    const htmlPath = path.join(outputDir, htmlFile);
+    if (!(await pathExists(htmlPath))) {
+      continue;
+    }
+
+    let html = await readFile(htmlPath, 'utf8');
+    for (const [filename, hash] of assetHashes) {
+      html = html.replaceAll(`./${filename}`, `./${filename}?v=${hash}`);
+    }
+    await writeFile(htmlPath, html, 'utf8');
+  }
 }
 
 async function copyScreenshot(game) {

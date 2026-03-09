@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Мобильный просмотр выбранной AI-игры-лабиринта с быстрым возвратом в каталог."
+    />
+    <title>AI Maze Arcade - Просмотр игры</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="viewer-body">
+    <main class="viewer-shell">
+      <header class="viewer-topbar">
+        <a class="button button-ghost viewer-back" id="viewer-back" href="./#games">К каталогу</a>
+        <div class="viewer-copy">
+          <p class="viewer-kicker">Мобильный просмотр</p>
+          <h1 id="viewer-title">Загрузка игры</h1>
+          <p class="viewer-meta" id="viewer-meta"></p>
+        </div>
+        <a class="button button-inline viewer-external" id="viewer-external" href="#" target="_blank" rel="noreferrer">Открыть отдельно</a>
+      </header>
+
+      <nav class="viewer-nav" aria-label="Навигация по играм">
+        <button class="button button-ghost" type="button" id="viewer-prev">Назад</button>
+        <button class="button button-ghost" type="button" id="viewer-next">Дальше</button>
+      </nav>
+
+      <section class="viewer-info">
+        <div class="viewer-preview-shell">
+          <img class="viewer-preview" id="viewer-preview" alt="Превью игры" hidden />
+          <div class="viewer-preview-fallback" id="viewer-preview-fallback">Скриншот скоро появится</div>
+        </div>
+        <div class="viewer-details">
+          <p class="viewer-summary" id="viewer-summary"></p>
+          <div class="viewer-highlights" id="viewer-highlights"></div>
+        </div>
+      </section>
+
+      <section class="viewer-frame-shell">
+        <iframe
+          class="viewer-frame"
+          id="viewer-frame"
+          title="Просмотр игры"
+          loading="eager"
+          allow="fullscreen; autoplay"
+        ></iframe>
+      </section>
+    </main>
+
+    <script type="module" src="./viewer.js"></script>
+  </body>
+</html>

@@ -1,9 +1,24 @@
 const tableBody = document.querySelector('#games-table-body');
-const template = document.querySelector('#game-row-template');
+const cardList = document.querySelector('#games-mobile-list');
+const tableTemplate = document.querySelector('#game-row-template');
+const cardTemplate = document.querySelector('#game-card-template');
 const filterRoot = document.querySelector('#program-filters');
 const statGames = document.querySelector('#stat-games');
 const statPrograms = document.querySelector('#stat-programs');
 const statModels = document.querySelector('#stat-models');
+const modalRoot = document.querySelector('#game-modal');
+const modalFrame = document.querySelector('#game-modal-frame');
+const modalTitle = document.querySelector('#game-modal-title');
+const modalMeta = document.querySelector('#game-modal-meta');
+const modalExternal = document.querySelector('#game-modal-external');
+const modalClose = document.querySelector('#game-modal-close');
+const modalPrev = document.querySelector('#game-modal-prev');
+const modalNext = document.querySelector('#game-modal-next');
+const modalPreview = document.querySelector('#game-modal-preview');
+const modalPreviewFallback = document.querySelector('#game-modal-preview-fallback');
+const modalSummary = document.querySelector('#game-modal-summary');
+const modalHighlights = document.querySelector('#game-modal-highlights');
+const DESKTOP_MEDIA = '(min-width: 900px)';
 const ALL_PROGRAMS_LABEL = 'Все';
 const PROGRAM_META = {
   claude: {
@@ -66,26 +81,16 @@ const PROGRAM_META = {
 
 let games = [];
 let activeProgram = ALL_PROGRAMS_LABEL;
+let activeGameSlug = null;
+let lastFocusedLaunch = null;
 
 function getProgramKey(program) {
-  if (program === 'Claude') {
-    return 'claude';
-  }
-  if (program === 'Codex') {
-    return 'codex';
-  }
-  if (program === 'GitHub Copilot') {
-    return 'copilot';
-  }
-  if (program === 'Gemini') {
-    return 'gemini';
-  }
-  if (program === 'Kilo') {
-    return 'kilo';
-  }
-  if (program === 'Ollama') {
-    return 'ollama';
-  }
+  if (program === 'Claude') return 'claude';
+  if (program === 'Codex') return 'codex';
+  if (program === 'GitHub Copilot') return 'copilot';
+  if (program === 'Gemini') return 'gemini';
+  if (program === 'Kilo') return 'kilo';
+  if (program === 'Ollama') return 'ollama';
   return 'default';
 }
 
@@ -98,6 +103,88 @@ function formatUpdatedAt(value) {
   const diffMs = Date.now() - date.getTime();
   const diffDays = Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
   return new Intl.RelativeTimeFormat('ru-RU', { numeric: 'auto' }).format(-diffDays, 'day');
+}
+
+function isDesktopLauncher() {
+  return window.matchMedia(DESKTOP_MEDIA).matches;
+}
+
+function getGameBySlug(slug) {
+  return games.find((game) => game.slug === slug) ?? null;
+}
+
+function getVisibleGames() {
+  const visibleGames = activeProgram === ALL_PROGRAMS_LABEL
+    ? games
+    : games.filter((game) => game.program === activeProgram);
+
+  return [...visibleGames].sort((left, right) => {
+    const leftTime = Date.parse(left.updatedAt || '');
+    const rightTime = Date.parse(right.updatedAt || '');
+    const timeDiff = (Number.isNaN(rightTime) ? 0 : rightTime) - (Number.isNaN(leftTime) ? 0 : leftTime);
+
+    return timeDiff
+      || left.program.localeCompare(right.program, 'ru')
+      || left.model.localeCompare(right.model, 'ru')
+      || left.title.localeCompare(right.title, 'ru');
+  });
+}
+
+function buildHighlightPills(items) {
+  return (items || []).slice(0, 3).map((item) => {
+    const pill = document.createElement('span');
+    pill.className = 'highlight-pill';
+    pill.textContent = item;
+    return pill;
+  });
+}
+
+function setGamePreview(image, fallback, game) {
+  if (game.screenshot) {
+    image.src = game.screenshot;
+    image.alt = `Превью игры ${game.title}`;
+    image.hidden = false;
+    fallback.hidden = true;
+    return;
+  }
+
+  image.hidden = true;
+  image.removeAttribute('src');
+  fallback.hidden = false;
+}
+
+function getViewerRoute(game) {
+  const params = new URLSearchParams();
+  params.set('game', game.slug);
+  if (activeProgram !== ALL_PROGRAMS_LABEL) {
+    params.set('program', activeProgram);
+  }
+  return `./play.html?${params.toString()}`;
+}
+
+function syncUrlState(options = {}) {
+  const params = new URLSearchParams(window.location.search);
+
+  if (activeProgram === ALL_PROGRAMS_LABEL) {
+    params.delete('program');
+  } else {
+    params.set('program', activeProgram);
+  }
+
+  if (options.keepGame && activeGameSlug) {
+    params.set('game', activeGameSlug);
+  } else {
+    params.delete('game');
+  }
+
+  const nextUrl = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}${window.location.hash}`;
+  const state = { modalGame: options.keepGame ? activeGameSlug : null, activeProgram };
+
+  if (options.push) {
+    window.history.pushState(state, '', nextUrl);
+  } else {
+    window.history.replaceState(state, '', nextUrl);
+  }
 }
 
 function setStats(items) {
@@ -133,6 +220,12 @@ function createFilterButton(label) {
     activeProgram = label;
     renderFilters();
     renderGames();
+
+    if (activeGameSlug && !getVisibleGames().some((game) => game.slug === activeGameSlug)) {
+      closeModal({ updateHistory: false });
+    }
+
+    syncUrlState({ keepGame: Boolean(activeGameSlug) && isDesktopLauncher() });
   });
 
   return button;
@@ -160,10 +253,23 @@ function setBadge(cell, text, className, options = {}) {
   cell.replaceChildren(badge);
 }
 
+function attachLaunchBehavior(link, game) {
+  link.href = isDesktopLauncher() ? game.route : getViewerRoute(game);
+  link.setAttribute('aria-label', `Открыть ${game.title}`);
+  link.addEventListener('click', (event) => {
+    lastFocusedLaunch = link;
+    if (isDesktopLauncher()) {
+      event.preventDefault();
+      openModal(game.slug, { pushHistory: true });
+    }
+  });
+}
+
 function bindRow(row, game) {
   const programKey = getProgramKey(game.program);
   const programMeta = PROGRAM_META[programKey] ?? PROGRAM_META.default;
 
+  row.dataset.slug = game.slug;
   setBadge(row.querySelector('[data-program]'), game.program, 'table-badge table-badge-program', {
     className: programMeta.className,
     icon: programMeta.icon,
@@ -173,34 +279,42 @@ function bindRow(row, game) {
   });
   row.querySelector('[data-description]').textContent = game.description || '';
   row.querySelector('[data-updated-at]').textContent = formatUpdatedAt(game.updatedAt);
+  attachLaunchBehavior(row.querySelector('[data-cta]'), game);
+}
 
-  const link = row.querySelector('[data-cta]');
-  link.href = game.route;
-  link.setAttribute('aria-label', `Открыть ${game.title}`);
+function bindCard(card, game) {
+  const programKey = getProgramKey(game.program);
+  const programMeta = PROGRAM_META[programKey] ?? PROGRAM_META.default;
+
+  setBadge(card.querySelector('[data-program]'), game.program, 'table-badge table-badge-program', {
+    className: programMeta.className,
+    icon: programMeta.icon,
+  });
+  setBadge(card.querySelector('[data-model]'), game.model, 'table-badge table-badge-model', {
+    className: programMeta.className,
+  });
+  card.querySelector('[data-updated-at]').textContent = formatUpdatedAt(game.updatedAt);
+  card.querySelector('[data-description]').textContent = game.description || game.summary || '';
+  const highlightsRoot = card.querySelector('[data-highlights]');
+  highlightsRoot.replaceChildren(...buildHighlightPills(game.highlights));
+  attachLaunchBehavior(card.querySelector('[data-cta]'), game);
 }
 
 function renderGames() {
-  const visibleGames =
-    activeProgram === ALL_PROGRAMS_LABEL
-      ? games
-      : games.filter((game) => game.program === activeProgram);
-
-  const orderedGames = [...visibleGames].sort((left, right) => {
-    const leftTime = Date.parse(left.updatedAt || '');
-    const rightTime = Date.parse(right.updatedAt || '');
-    const timeDiff = (Number.isNaN(rightTime) ? 0 : rightTime) - (Number.isNaN(leftTime) ? 0 : leftTime);
-
-    return timeDiff
-      || left.program.localeCompare(right.program, 'ru')
-      || left.model.localeCompare(right.model, 'ru')
-      || left.title.localeCompare(right.title, 'ru');
-  });
+  const orderedGames = getVisibleGames();
 
   tableBody.replaceChildren(
     ...orderedGames.map((game) => {
-      const fragment = template.content.cloneNode(true);
-      const row = fragment.querySelector('.game-row');
-      bindRow(row, game);
+      const fragment = tableTemplate.content.cloneNode(true);
+      bindRow(fragment.querySelector('.game-row'), game);
+      return fragment;
+    }),
+  );
+
+  cardList.replaceChildren(
+    ...orderedGames.map((game) => {
+      const fragment = cardTemplate.content.cloneNode(true);
+      bindCard(fragment.querySelector('.game-card'), game);
       return fragment;
     }),
   );
@@ -219,10 +333,7 @@ function attachRevealObserver() {
         }
       }
     },
-    {
-      threshold: 0.16,
-      rootMargin: '0px 0px -8% 0px',
-    },
+    { threshold: 0.16, rootMargin: '0px 0px -8% 0px' },
   );
 
   for (const item of items) {
@@ -232,15 +343,184 @@ function attachRevealObserver() {
   }
 }
 
+function updateModalNavigation() {
+  const visibleGames = getVisibleGames();
+  const index = visibleGames.findIndex((game) => game.slug === activeGameSlug);
+  const previousGame = index > 0 ? visibleGames[index - 1] : null;
+  const nextGame = index >= 0 && index < visibleGames.length - 1 ? visibleGames[index + 1] : null;
+
+  modalPrev.disabled = !previousGame;
+  modalNext.disabled = !nextGame;
+  modalPrev.onclick = previousGame ? () => openModal(previousGame.slug, { pushHistory: false }) : null;
+  modalNext.onclick = nextGame ? () => openModal(nextGame.slug, { pushHistory: false }) : null;
+}
+
+function trapFocus(event) {
+  if (event.key !== 'Tab' || modalRoot.hidden) return;
+
+  const focusable = [...modalRoot.querySelectorAll('button, a[href], iframe')].filter((element) => !element.disabled);
+  if (focusable.length === 0) return;
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
+function handleModalKeydown(event) {
+  if (event.key === 'Escape') {
+    closeModal();
+    return;
+  }
+  trapFocus(event);
+}
+
+function fillModalDetails(game) {
+  modalTitle.textContent = game.title;
+  modalMeta.textContent = `${game.program} · ${game.model}${game.description ? ` · ${game.description}` : ''}`;
+  modalSummary.textContent = game.summary || game.tagline || 'Подробности скоро появятся.';
+  modalHighlights.replaceChildren(...buildHighlightPills(game.highlights));
+  modalExternal.href = game.route;
+  setGamePreview(modalPreview, modalPreviewFallback, game);
+}
+
+function openModal(slug, options = {}) {
+  if (!isDesktopLauncher()) {
+    const game = getGameBySlug(slug);
+    if (game) {
+      window.location.href = getViewerRoute(game);
+    }
+    return;
+  }
+
+  const game = getGameBySlug(slug);
+  if (!game) return;
+
+  activeGameSlug = game.slug;
+  fillModalDetails(game);
+  modalFrame.src = game.route;
+  modalFrame.title = `Просмотр игры ${game.title}`;
+  modalRoot.hidden = false;
+  document.body.classList.add('has-modal-open');
+  updateModalNavigation();
+
+  if (options.pushHistory) {
+    syncUrlState({ keepGame: true, push: true });
+  } else {
+    syncUrlState({ keepGame: true });
+  }
+
+  window.requestAnimationFrame(() => modalClose.focus());
+}
+
+function closeModal(options = {}) {
+  if (modalRoot.hidden) {
+    activeGameSlug = null;
+    syncUrlState({ keepGame: false });
+    return;
+  }
+
+  modalRoot.hidden = true;
+  modalFrame.src = 'about:blank';
+  document.body.classList.remove('has-modal-open');
+  activeGameSlug = null;
+
+  if (options.updateHistory !== false) {
+    syncUrlState({ keepGame: false });
+  }
+
+  if (lastFocusedLaunch instanceof HTMLElement) {
+    lastFocusedLaunch.focus();
+  }
+}
+
+function applyUrlState() {
+  const params = new URLSearchParams(window.location.search);
+  const requestedProgram = params.get('program');
+  const requestedGame = params.get('game');
+
+  if (requestedProgram && games.some((game) => game.program === requestedProgram)) {
+    activeProgram = requestedProgram;
+  }
+
+  renderFilters();
+  renderGames();
+  syncUrlState({ keepGame: false });
+
+  if (requestedGame) {
+    if (isDesktopLauncher()) {
+      openModal(requestedGame, { pushHistory: false });
+    } else {
+      const game = getGameBySlug(requestedGame);
+      if (game) {
+        window.location.replace(getViewerRoute(game));
+      }
+    }
+  }
+}
+
+function registerGlobalEvents() {
+  modalClose.addEventListener('click', () => closeModal());
+  modalRoot.addEventListener('click', (event) => {
+    if (event.target instanceof HTMLElement && event.target.hasAttribute('data-modal-close')) {
+      closeModal();
+    }
+  });
+  window.addEventListener('keydown', handleModalKeydown);
+  window.addEventListener('popstate', () => {
+    const params = new URLSearchParams(window.location.search);
+    const nextProgram = params.get('program');
+    const nextGame = params.get('game');
+    activeProgram = nextProgram && games.some((game) => game.program === nextProgram)
+      ? nextProgram
+      : ALL_PROGRAMS_LABEL;
+    renderFilters();
+    renderGames();
+
+    if (nextGame && isDesktopLauncher()) {
+      openModal(nextGame, { pushHistory: false });
+      return;
+    }
+
+    closeModal({ updateHistory: false });
+  });
+
+  window.matchMedia(DESKTOP_MEDIA).addEventListener('change', (event) => {
+    renderGames();
+
+    if (!event.matches && activeGameSlug) {
+      const game = getGameBySlug(activeGameSlug);
+      if (game) {
+        window.location.href = getViewerRoute(game);
+      }
+      return;
+    }
+
+    if (event.matches) {
+      const params = new URLSearchParams(window.location.search);
+      const requestedGame = params.get('game');
+      if (requestedGame) {
+        openModal(requestedGame, { pushHistory: false });
+      }
+    }
+  });
+}
+
 async function init() {
   const response = await fetch('./games.manifest.json');
   games = await response.json();
 
   setStats(games);
-  renderFilters();
-  renderGames();
+  applyUrlState();
+  registerGlobalEvents();
 }
 
 init().catch((error) => {
   tableBody.innerHTML = `<tr><td colspan="5" class="error-state">Не удалось загрузить каталог игр: ${error.message}</td></tr>`;
+  cardList.innerHTML = `<article class="error-state">Не удалось загрузить каталог игр: ${error.message}</article>`;
 });

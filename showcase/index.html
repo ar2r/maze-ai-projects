@@ -109,6 +109,10 @@
             <div class="filter-group" id="program-filters" aria-label="Фильтры по программе"></div>
           </div>
 
+          <p class="launch-hint" data-reveal>
+            На десктопе игра открывается в окне поверх каталога, на мобильных - на отдельном экране с быстрым возвратом.
+          </p>
+
           <div class="table-shell" data-reveal>
             <table class="games-table">
               <thead>
@@ -123,6 +127,8 @@
               <tbody id="games-table-body" aria-live="polite"></tbody>
             </table>
           </div>
+
+          <div class="games-mobile-list" id="games-mobile-list" aria-live="polite"></div>
         </section>
       </main>
     </div>
@@ -138,6 +144,66 @@
         </td>
       </tr>
     </template>
+
+    <template id="game-card-template">
+      <article class="game-card">
+        <div class="game-card-topline">
+          <div data-program></div>
+          <div data-updated-at></div>
+        </div>
+        <div class="game-card-model" data-model></div>
+        <p class="game-card-description" data-description></p>
+        <div class="game-card-highlights" data-highlights></div>
+        <div class="game-card-actions">
+          <a class="button button-inline" data-cta href="#">Играть</a>
+        </div>
+      </article>
+    </template>
+
+    <div class="game-modal" id="game-modal" hidden>
+      <div class="game-modal-backdrop" data-modal-close></div>
+      <section
+        class="game-modal-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="game-modal-title"
+      >
+        <header class="game-modal-header">
+          <div class="game-modal-copy">
+            <p class="game-modal-kicker">Быстрый запуск</p>
+            <h2 id="game-modal-title">Загрузка игры</h2>
+            <p class="game-modal-meta" id="game-modal-meta"></p>
+          </div>
+          <div class="game-modal-actions">
+            <button class="button button-ghost" type="button" id="game-modal-prev">Назад</button>
+            <button class="button button-ghost" type="button" id="game-modal-next">Дальше</button>
+            <a class="button button-inline" id="game-modal-external" href="#" target="_blank" rel="noreferrer">Открыть отдельно</a>
+            <button class="button button-inline" type="button" id="game-modal-close">К каталогу</button>
+          </div>
+        </header>
+
+        <div class="game-modal-body">
+          <aside class="game-modal-sidebar">
+            <div class="game-modal-preview-shell">
+              <img class="game-modal-preview" id="game-modal-preview" alt="Превью игры" hidden />
+              <div class="game-modal-preview-fallback" id="game-modal-preview-fallback">Скриншот скоро появится</div>
+            </div>
+            <p class="game-modal-summary" id="game-modal-summary"></p>
+            <div class="game-modal-highlights" id="game-modal-highlights"></div>
+          </aside>
+
+          <div class="game-modal-frame-shell">
+            <iframe
+              class="game-modal-frame"
+              id="game-modal-frame"
+              title="Просмотр игры"
+              loading="eager"
+              allow="fullscreen; autoplay"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+    </div>
 
     <script type="module" src="./main.js"></script>
   </body>
